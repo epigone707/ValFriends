@@ -53,6 +53,14 @@ tests = ["attrs", "zope-interface"]
 tests-no-zope = ["cloudpickle", "hypothesis", "mypy (>=1.1.1)", "pympler", "pytest-mypy-plugins", "pytest-xdist", "pytest (>=4.3.0)"]
 
 [[package]]
+name = "certifi"
+version = "2023.7.22"
+description = "Python package for providing Mozilla's CA Bundle."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "charset-normalizer"
 version = "3.2.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
@@ -113,6 +121,38 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "requests"
+version = "2.31.0"
+description = "Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+certifi = ">=2017.4.17"
+charset-normalizer = ">=2,<4"
+idna = ">=2.5,<4"
+urllib3 = ">=1.21.1,<3"
+
+[package.extras]
+socks = ["PySocks (>=1.5.6,!=1.5.7)"]
+use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "urllib3"
+version = "2.0.4"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
+secure = ["certifi", "cryptography (>=1.9)", "idna (>=2.0.0)", "pyopenssl (>=17.1.0)", "urllib3-secure-extra"]
+socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
+zstd = ["zstandard (>=0.18.0)"]
+
+[[package]]
 name = "yarl"
 version = "1.9.2"
 description = "Yet another URL library"
@@ -127,17 +167,20 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "45a41301d954682217b27bd9d64a765813897bd53b167a64bd5eb053e8c9d920"
+content-hash = "c3cbaba21e1032ca511f9cf91a320e6bfd20c5829d7bf64fd942c9d9e5040308"
 
 [metadata.files]
 aiohttp = []
 aiosignal = []
 async-timeout = []
 attrs = []
+certifi = []
 charset-normalizer = []
 discord = []
 "discord.py" = []
 frozenlist = []
 idna = []
 multidict = []
+requests = []
+urllib3 = []
 yarl = []
