@@ -8,6 +8,10 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.10"
 discord = "^2.3.1"
 requests = "^2.31.0"
+Flask = "^2.3.2"
+disnake = "^2.9.0"
+sqlitedict = "^2.1.0"
+pydantic-settings = "^2.0.2"
 
 [tool.poetry.dev-dependencies]
 
