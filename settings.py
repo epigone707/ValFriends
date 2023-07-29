@@ -6,6 +6,8 @@ class Settings(BaseSettings):
   token: str = ""
   guild: int = 0
   db_filename: str = "data.sqlite"
+  expire_time: int = 60 * 60
+  log_filename: str = "val-friend.log"
 
 
 settings = Settings()

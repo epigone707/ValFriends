@@ -12,6 +12,8 @@ Flask = "^2.3.2"
 disnake = "^2.9.0"
 sqlitedict = "^2.1.0"
 pydantic-settings = "^2.0.2"
+loguru = "^0.7.0"
+pydantic = "^2.1.1"
 
 [tool.poetry.dev-dependencies]
 

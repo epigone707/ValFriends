@@ -206,6 +206,21 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
+name = "loguru"
+version = "0.7.0"
+description = "Python logging made (stupidly) simple"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+colorama = {version = ">=0.3.4", markers = "sys_platform == \"win32\""}
+win32-setctime = {version = ">=1.0.0", markers = "sys_platform == \"win32\""}
+
+[package.extras]
+dev = ["mypy (==v0.910)", "tox (==3.27.1)", "pytest (==6.1.2)", "pytest-cov (==2.12.1)", "colorama (==0.4.5)", "freezegun (==1.1.0)", "mypy (==v0.971)", "pytest-mypy-plugins (==1.9.3)", "mypy (==v0.990)", "pre-commit (==3.2.1)", "tox (==4.4.6)", "pytest (==7.2.1)", "pytest-cov (==4.0.0)", "pytest-mypy-plugins (==1.10.1)", "colorama (==0.4.6)", "freezegun (==1.2.2)", "Sphinx (==5.3.0)", "sphinx-autobuild (==2021.3.14)", "sphinx-rtd-theme (==1.2.0)"]
+
+[[package]]
 name = "markupsafe"
 version = "2.1.3"
 description = "Safely add untrusted strings to HTML/XML markup."
@@ -334,6 +349,17 @@ MarkupSafe = ">=2.1.1"
 watchdog = ["watchdog (>=2.3)"]
 
 [[package]]
+name = "win32-setctime"
+version = "1.1.0"
+description = "A small Python utility to set file creation time on Windows"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
+
+[[package]]
 name = "yarl"
 version = "1.9.2"
 description = "Yet another URL library"
@@ -348,7 +374,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "fb45aefc2d6d9747e4ce174527a625d403636e6804721709177aae5fcd9eb5c2"
+content-hash = "7ef5e123af2be8bd2dd22087875aee602eed949a7d990f8ecdbc4e5a424c5808"
 
 [metadata.files]
 aiohttp = []
@@ -369,6 +395,7 @@ frozenlist = []
 idna = []
 itsdangerous = []
 jinja2 = []
+loguru = []
 markupsafe = []
 multidict = []
 pydantic = []
@@ -380,4 +407,5 @@ sqlitedict = []
 typing-extensions = []
 urllib3 = []
 werkzeug = []
+win32-setctime = []
 yarl = []

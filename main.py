@@ -2,180 +2,242 @@ import os
 import keep_alive
 import disnake
 from disnake.ext import commands
+from logger import logger
+from models.users import users
+from utils import get_rank_order
+"""
+For bot developers:
 
-from utils import get_user_stats, add_user, delete_user, get_users
+features proposed:
+- get user's recent kda
+- get user's recent winrate
+- add rank icon to every rank shown in stats, allstats and crank. There is a icon url in the return json from API, just store it in the cache!
+
+features in progress:
+
+
+features finished:
+- update the userlist cache in some way. option1: add a timestamp for every user in the cache. option2: add an option in stats command or add a new command to update the cache
+- use slash commands to let them show when user types '/'
+- support help slash command. Need to show the info for each paramenter when user clicks on it.
+
+"""
 
 intents = disnake.Intents.default()
 intents.message_content = True
 command_sync_flags = commands.CommandSyncFlags.default()
 command_sync_flags.sync_commands_debug = True
+server_id = 1129617599127375972
 
 bot = commands.Bot(command_prefix='!',
                    command_sync_flags=command_sync_flags,
-                   intents=intents)
-
-# """
-# For bot developers:
-
-# features proposed:
-# - get user's recent kda
-# - get user's recent winrate
-# - update the userlist cache (users.json) in some way. option1: add a timestamp for every user in the cache. option2: add an option in stats command or add a new command to update the cache
-# - add rank icon to every rank shown in stats, allstats and crank. There is a icon url in the return json from API, just store it in the cache!
-
-# features in progress:
-# - use command tree sync() to let our commands show in user input box
-
-# features finished:
-# -
-
-# """
-
-# @client.event
-# async def on_ready():
-#   print("Bot is ready!")
-#   try:
-#     # Add the guild id in which the slash command will appear.
-#     # If it should be in all, remove the argument,
-#     # but note that it will take some time (up to an hour) to register the command if it's for all guilds
-#     synced = await tree.sync(guild=discord.Object(id=SERVER_ID))
-#     print(f"Synced {len(synced)} commmand(s)")
-#   except Exception as e:
-#     print(e)
-#   print('We have logged in as {0.user}'.format(client))
-
-# @tree.command(name="commandname",
-#               description="My first application Command",
-#               guild=discord.Object(id=SERVER_ID))
-# async def first_command(interaction):
-#   await interaction.response.send_message("My first application Command!")
+                   intents=intents,
+                   test_guilds=[server_id],
+                   help_command=None)
 
 
 @bot.event
 async def on_ready():
-  print('We have logged in as {0.user}'.format(bot))
+  logger.info('We have logged in as {0.user}'.format(bot))
 
 
-@bot.slash_command(description="Responds with 'World'")
-async def hello(inter):
-  await inter.response.send_message("World")
+@bot.slash_command()
+async def hello(inter: disnake.ApplicationCommandInteraction):
+  """
+  Responds with 'Hello World'. Used for testing.
+  """
+  await inter.response.send_message(f"Hello World! {inter.author.mention}")
+
+
+@bot.slash_command()
+async def help(inter: disnake.ApplicationCommandInteraction, command=""):
+  """
+  Print information for commands
+  
+  Parameters
+  ----------
+  command: (Optional) The command you want to view the detailed help message.
+  """
+  embed = disnake.Embed(title="Commands Info", color=disnake.Color.blue())
+  if command != "":
+    for s_command in bot.slash_commands:
+      if s_command.name == command:
+        val = s_command.description
+        for option in s_command.options:
+          val += '\n'
+          val += option.name + ' - ' + option.description
+        embed.add_field(name=command, value=val, inline=True)
+        await inter.response.send_message(embed=embed)
+        return
+    embed.description = f"Command {command} doesn't exist."
+  else:
+    for s_command in bot.slash_commands:
+      embed.add_field(name=s_command.name,
+                      value=s_command.description,
+                      inline=True)
+  await inter.response.send_message(embed=embed)
 
 
 @bot.slash_command(description="Get all users' stats.")
-async def allstats(inter):
-  users = get_users()
+async def allstats(inter: disnake.ApplicationCommandInteraction):
+  """
+  Get all users' stats.
+  """
   embed = disnake.Embed(title="Stats of All Registered Users",
                         color=disnake.Color.blue())
-  for user, profile in users.items():
-    val = f"Highest rank: {profile['hrank']}\nCurrent rank: {profile['crank']}\nElo: {str(profile['elo'])}"
+  for user in sorted(users.keys(), key=lambda x: x.lower()):
+    profile = users[user]
+    val = f"Highest rank: {profile.hrank}\nCurrent rank: {profile.crank}\nElo: {profile.elo}"
     embed.add_field(name=user, value=val, inline=True)
   await inter.response.send_message(embed=embed)
 
 
-@bot.slash_command(name="stats",
-                   description="Get user's stats. usage: <username>#<tag>.")
-async def stats(inter, fullname: str):
-  res = get_user_stats(fullname)
-  embed = disnake.Embed(title=f"Stats of {fullname}",
+async def autocomp_username(inter: disnake.ApplicationCommandInteraction, user_input: str):
+    return [user for user in users if user_input.lower() in user.lower()]
+
+@bot.slash_command(name="stats")
+async def stats(inter: disnake.ApplicationCommandInteraction, fullname: str = commands.Param(autocomplete=autocomp_username)):
+  """
+  Get user's stats.
+  
+  Parameters
+  ----------
+  fullname: The fullname of the player, should be in the form: <username>#<tag>.
+  """
+  res = users[fullname]
+  logger.info(fullname)
+  logger.info(res)
+  embed = disnake.Embed(title=f"Stats of {res.fullname}",
                         color=disnake.Color.blue())
-  embed.add_field(name='Highest rank', value=res["hrank"], inline=True)
-  embed.add_field(name='Current rank', value=res["crank"], inline=True)
-  embed.add_field(name='Elo', value=res["elo"], inline=True)
+  embed.add_field(name='Highest rank', value=res.hrank, inline=True)
+  embed.add_field(name='Current rank', value=res.crank, inline=True)
+  embed.add_field(name='Elo', value=res.elo, inline=True)
+
+  if res.recent_stats:
+    recent_c_performance = ""
+    for valstats in res.recent_stats:
+      kda = f"kda:{valstats.kills}/{valstats.deaths}/{valstats.assists}"
+      recent_c_performance += f"{valstats.result}  dmg:{valstats.damage} {kda}\n"
+    embed.add_field(name='Recent Competitive Performance',
+                    value=recent_c_performance,
+                    inline=True)
   await inter.response.send_message(embed=embed)
 
 
-@bot.slash_command(
-  name='add',
-  description=
-  "Add a user to the user list of this server. usage: <username>#<tag>")
-async def add(inter, fullname: str = ""):
-  if fullname == "":
-    await inter.response.send_message(
-      'Error: Please enter your username and tag')
-  resMsg = f"Sucessfully added {fullname} to user list!"
-  if add_user(fullname) == None:
-    resMsg = f"Failed to add {fullname} to user list!"
-  await inter.response.send_message(resMsg)
+@bot.slash_command(name="expire")
+async def expire(inter: disnake.ApplicationCommandInteraction, fullname: str):
+  """
+  Force expire user's stats.
+  
+  Parameters
+  ----------
+  fullname: The fullname of the player, should be in the form: <username>#<tag>.
+  """
+  await inter.response.send_message('expire started')
+  users.expire(fullname)
 
 
-@bot.slash_command(
-  name='delete',
-  description=
-  "Delete a user from the user list of this server. usage: /delete <username>#<tag>"
-)
-async def delete(inter, fullname: str = ""):
-  if fullname == "":
-    await inter.response.send_message(
-      'Error: Please enter your username and tag')
-  delete_user(fullname)
+@bot.slash_command(name="allexpire")
+async def allexpire(inter: disnake.ApplicationCommandInteraction):
+  """
+  Force expire all user's stats.
+  """
+  await inter.response.send_message('expire started')
+  for fullname in users.keys():
+    users.expire(fullname)
+
+
+@bot.slash_command(name='delete')
+@commands.default_member_permissions(administrator=True)
+async def delete(inter: disnake.ApplicationCommandInteraction, fullname):
+  """
+  Delete a user from the user list of this server (admin only).
+  
+  Parameters
+  ----------
+  fullname: The fullname of the player, should be in the form: <username>#<tag>.
+  """
+  users.pop(fullname)
   await inter.response.send_message(
     f"Sucessfully deleted {fullname} from user list!")
 
 
-@bot.slash_command(name='userlist', description="Print user list.")
-async def userlist(inter):
-  users = get_users()
+@bot.slash_command(name='alldelete')
+@commands.default_member_permissions(administrator=True)
+async def alldelete(inter: disnake.ApplicationCommandInteraction):
+  """
+  Delete all users from the user list of this server (admin only).
+  """
+  for fullname in users.keys():
+    users.pop(fullname)
+  await inter.response.send_message(
+    "Sucessfully deleted all users from user list!")
+
+
+@bot.slash_command(name='userlist')
+async def userlist(inter: disnake.ApplicationCommandInteraction):
+  """
+  Print user list.
+  """
   embed = disnake.Embed(title="All Valorant Users Registered In This Server",
                         color=disnake.Color.blue())
-  embed.add_field(name='Users', value="\n".join(users.keys()), inline=True)
-  await inter.response.send_message(embed=embed)
-
-
-@bot.slash_command(
-  name='apex',
-  description="Give a fair and objective review of the game APEX.")
-async def apex(inter):
-  embed = disnake.Embed(
-    title="Fair and Objective Review of APEX",
-    description=
-    "Alex legends has been a trash game ever since I first played it in 2019.. the players are toxic, the map is shit, like it’s not cool or interesting to me, the guns do fuck all for damage and everything is all over the place to find.. and yeah the servers do suck. After all, the current season is garbage.",
-    color=disnake.Color.blue())
-  await inter.response.send_message(embed=embed)
-
-
-@bot.slash_command(
-  name='valorant',
-  description="Give a fair and objective review of the game VALORANT.")
-async def valorant(inter):
-  embed = disnake.Embed(
-    title="Fair and Objective Review of VALORANT",
-    description=
-    "VALORANT is a character-based 5v5 tactical shooter set on the global stage. Outwit, outplay, and outshine your competition with tactical abilities, precise gunplay, and adaptive teamwork. CREATIVITY IS YOUR GREATEST WEAPON!",
-    color=disnake.Color.blue())
-  await inter.response.send_message(embed=embed)
-
-
-@bot.slash_command(
-  name='crank',
-  description=
-  "Print users who have highest current rank in the user list. usage: /crank [optional_num]"
-)
-async def crank(inter, limit: str = "0"):
-  if limit:
-    limit = int(limit)
-  users = get_users()
-
-  def compare_crank(username):
-    ranks = [
-      "Iron", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Ascendant",
-      "Immortal", "Radiant"
-    ]
-    crank = users[username]["crank"]
-    if crank is None:
-      return 0
-    rank, level = crank.split(" ")
-    return ranks.index(rank) * 10 + int(level)
-
-  users = list(users.keys())
-  users.sort(key=compare_crank, reverse=True)
-  if limit > 0:
-    users = users[:limit]
-  embed = disnake.Embed(title="Current Ranks", color=disnake.Color.blue())
-  embed.add_field(name='Val User', value='\n'.join(users), inline=True)
-  embed.add_field(name='Rank',
-                  value='\n'.join(
-                    map(lambda x: users[x]["crank"] or "Unranked", users)),
+  embed.add_field(name='Users',
+                  value="\n".join(sorted(users.keys(),
+                                         key=lambda x: x.lower())),
                   inline=True)
+  await inter.response.send_message(embed=embed)
+
+
+@bot.slash_command(name='review')
+async def review(inter: disnake.ApplicationCommandInteraction,
+                 game: str = commands.Param(choices=["apex", "valorant"])):
+  """
+  Give a fair and objective review of a game.
+  
+  Parameters
+  ----------
+  game: The game you want to review.
+  """
+  if game == "apex":
+    game_description = "Apex legends has been a trash game ever since I first played it in 2019.. the players are toxic, the map is shit, like it’s not cool or interesting to me, the guns do fuck all for damage and everything is all over the place to find.. and yeah the servers and controller aim assist do suck. After all, the current season is garbage."
+  elif game == "valorant":
+    game_description = "VALORANT is a character-based 5v5 tactical shooter set on the global stage. Outwit, outplay, and outshine your competition with tactical abilities, precise gunplay, and adaptive teamwork. CREATIVITY IS YOUR GREATEST WEAPON!"
+
+  embed = disnake.Embed(title=f"Fair and Objective Review of {game}",
+                        description=game_description,
+                        color=disnake.Color.blue())
+  await inter.response.send_message(embed=embed)
+
+
+@bot.slash_command(name='crank')
+async def crank(inter: disnake.ApplicationCommandInteraction, limit: int = 0):
+  """
+  Print users who have highest current rank in the user list.
+  
+  Parameters
+  ----------
+  limit: An interger value that represent how many users you want to print.
+  """
+  userList, rankList = get_rank_order(users, "crank", limit)
+  embed = disnake.Embed(title="Current Ranks", color=disnake.Color.blue())
+  embed.add_field(name='Val User', value='\n'.join(userList), inline=True)
+  embed.add_field(name='Rank', value='\n'.join(rankList), inline=True)
+  await inter.response.send_message(embed=embed)
+
+
+@bot.slash_command(name='hrank')
+async def hrank(inter: disnake.ApplicationCommandInteraction, limit: int = 0):
+  """
+  Print users who have highest lifetime rank in the user list.
+  
+  Parameters
+  ----------
+  limit: An interger value that represent how many users you want to print.
+  """
+  userList, rankList = get_rank_order(users, "hrank", limit)
+  embed = disnake.Embed(title="Highest Ranks", color=disnake.Color.blue())
+  embed.add_field(name='Val User', value='\n'.join(userList), inline=True)
+  embed.add_field(name='Rank', value='\n'.join(rankList), inline=True)
   await inter.response.send_message(embed=embed)
 
 
