@@ -19,7 +19,7 @@ features in progress:
 features finished:
 - update the userlist cache in some way. option1: add a timestamp for every user in the cache. option2: add an option in stats command or add a new command to update the cache
 - use slash commands to let them show when user types '/'
-- support help slash command. Need to show the info for each paramenter when user clicks on it.
+- support help slash command. Need to show the info for each parameter when user clicks on it.
 - get user's recent matches stats like kda
 - autocomplete username
 
@@ -160,7 +160,7 @@ async def delete(inter: disnake.ApplicationCommandInteraction, fullname: str = c
   """
   users.pop(fullname)
   await inter.response.send_message(
-    f"Sucessfully deleted {fullname} from user list!")
+    f"Successfully deleted {fullname} from user list!")
 
 
 @bot.slash_command(name='alldelete')
@@ -172,7 +172,7 @@ async def alldelete(inter: disnake.ApplicationCommandInteraction):
   for fullname in users.keys():
     users.pop(fullname)
   await inter.response.send_message(
-    "Sucessfully deleted all users from user list!")
+    "Successfully deleted all users from user list!")
 
 
 @bot.slash_command(name='userlist')
@@ -218,7 +218,7 @@ async def crank(inter: disnake.ApplicationCommandInteraction, limit: int = 0):
   
   Parameters
   ----------
-  limit: An interger value that represent how many users you want to print.
+  limit: An integer value that represent how many users you want to print.
   """
   userList, rankList = get_rank_order(users, "crank", limit)
   embed = disnake.Embed(title="Current Ranks", color=disnake.Color.blue())
@@ -234,7 +234,7 @@ async def hrank(inter: disnake.ApplicationCommandInteraction, limit: int = 0):
   
   Parameters
   ----------
-  limit: An interger value that represent how many users you want to print.
+  limit: An integer value that represent how many users you want to print.
   """
   userList, rankList = get_rank_order(users, "hrank", limit)
   embed = disnake.Embed(title="Highest Ranks", color=disnake.Color.blue())

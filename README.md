@@ -18,7 +18,7 @@ You need to set environment variables `SERVER_ID` and `TOKEN`(discord bot token)
 
 We provides `keep_alive.py` in case you want to host the bot on [replit](https://replit.com/~).
 
-## Baisc Usage
+## Basic Usage
 Originally, the user list is empty. You can add your valorant account to the user list by executing:
 ```
 /stats <valorant_name>#<valorant_tag>
@@ -73,7 +73,7 @@ allstats - Get all users' stats.
 expire - Force expire user's stats.
 alldelete - Delete all users from the user list of this server (admin only).
 ```
-You can aslo execute `help <command>` to view the details of the command parameters.
+You can also execute `help <command>` to view the details of the command parameters.
 
 
 ## API reference
