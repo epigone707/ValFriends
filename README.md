@@ -25,7 +25,7 @@ Originally, the user list is empty. You can add your valorant account to the use
 ```
 This command also prints user stats. For example:
 
-![image](assets/screenshot_1.png)
+![image](assets/1.png)
 
 You can also ask your friends to register their valorant accounts.
 
