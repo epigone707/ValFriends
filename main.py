@@ -9,8 +9,6 @@ from utils import get_rank_order
 For bot developers:
 
 features proposed:
-- get user's recent kda
-- get user's recent winrate
 - add rank icon to every rank shown in stats, allstats and crank. There is a icon url in the return json from API, just store it in the cache!
 
 features in progress:
@@ -20,6 +18,8 @@ features finished:
 - update the userlist cache in some way. option1: add a timestamp for every user in the cache. option2: add an option in stats command or add a new command to update the cache
 - use slash commands to let them show when user types '/'
 - support help slash command. Need to show the info for each paramenter when user clicks on it.
+- get user's recent matches stats like kda
+- autocomplete username
 
 """
 
@@ -27,7 +27,7 @@ intents = disnake.Intents.default()
 intents.message_content = True
 command_sync_flags = commands.CommandSyncFlags.default()
 command_sync_flags.sync_commands_debug = True
-server_id = 1129617599127375972
+server_id = int(os.getenv("SERVER_ID"))
 
 bot = commands.Bot(command_prefix='!',
                    command_sync_flags=command_sync_flags,
@@ -125,7 +125,7 @@ async def stats(inter: disnake.ApplicationCommandInteraction, fullname: str = co
 
 
 @bot.slash_command(name="expire")
-async def expire(inter: disnake.ApplicationCommandInteraction, fullname: str):
+async def expire(inter: disnake.ApplicationCommandInteraction, fullname: str = commands.Param(autocomplete=autocomp_username)):
   """
   Force expire user's stats.
   
@@ -149,7 +149,7 @@ async def allexpire(inter: disnake.ApplicationCommandInteraction):
 
 @bot.slash_command(name='delete')
 @commands.default_member_permissions(administrator=True)
-async def delete(inter: disnake.ApplicationCommandInteraction, fullname):
+async def delete(inter: disnake.ApplicationCommandInteraction, fullname: str = commands.Param(autocomplete=autocomp_username)):
   """
   Delete a user from the user list of this server (admin only).
   
