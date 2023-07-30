@@ -21,6 +21,7 @@ Originally, the user list is empty. You can add your valorant account to the use
 /stats <valorant_name>#<valorant_tag>
 ```
 This command also prints user stats. For example:
+
 ![image](assets/screenshot_1.png)
 
 You can also ask your friends to register their valorant accounts.
@@ -29,9 +30,11 @@ To view the user list, execute:
 ```
 /userlist
 ```
+
 ![image](assets/2.png)
 
 When you execute commands that require username as input, like `stats`, it will autocomplete based on user input:
+
 ![image](assets/3.png)
 
 
