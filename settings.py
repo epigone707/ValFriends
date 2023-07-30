@@ -8,6 +8,7 @@ class Settings(BaseSettings):
   db_filename: str = "data.sqlite"
   expire_time: int = 60 * 60
   log_filename: str = "val-friend.log"
+  test_server_id: int = 0
 
 
 settings = Settings()

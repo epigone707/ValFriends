@@ -1,10 +1,12 @@
-import os
-import keep_alive
 import disnake
 from disnake.ext import commands
+
+import keep_alive
 from logger import logger
 from models.users import users
+from settings import settings
 from utils import get_rank_order
+
 """
 For bot developers:
 
@@ -27,12 +29,11 @@ intents = disnake.Intents.default()
 intents.message_content = True
 command_sync_flags = commands.CommandSyncFlags.default()
 command_sync_flags.sync_commands_debug = True
-server_id = int(os.getenv("SERVER_ID"))
 
 bot = commands.Bot(command_prefix='!',
                    command_sync_flags=command_sync_flags,
                    intents=intents,
-                   test_guilds=[server_id],
+                   test_guilds=[settings.test_server_id],
                    help_command=None)
 
 
@@ -198,6 +199,7 @@ async def review(inter: disnake.ApplicationCommandInteraction,
   ----------
   game: The game you want to review.
   """
+  game_description = ""
   if game == "apex":
     game_description = "Apex legends has been a trash game ever since I first played it in 2019.. the players are toxic, the map is shit, like it’s not cool or interesting to me, the guns do fuck all for damage and everything is all over the place to find.. and yeah the servers and controller aim assist do suck. After all, the current season is garbage."
   elif game == "valorant":
@@ -243,4 +245,4 @@ async def hrank(inter: disnake.ApplicationCommandInteraction, limit: int = 0):
 
 if __name__ == "__main__":
   keep_alive.keep_alive()
-  bot.run(os.getenv("TOKEN"))
+  bot.run(settings.token)
