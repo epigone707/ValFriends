@@ -1,4 +1,7 @@
 # ValFriends
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg?style=for-the-badge)](#)
+[![disnake 2.9.0+](https://img.shields.io/badge/disnake-2.9.0+-blue.svg?style=for-the-badge)](#)
+
 A Discord bot for game Valorant, aims for helping you play with your friends happily. 
 
 Just need a simple command to register your valorant account into the user list. You can easily view stats and rank info for everyone in the discord server. 
