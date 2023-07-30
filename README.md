@@ -77,6 +77,6 @@ You can aslo execute `help <command>` to view the details of the command paramet
 A big thank you to [Henrik](https://github.com/Henrik-3/unofficial-valorant-api)!
 
 ## Contributors
-- [@Yijie-Shi0829](https://github.com/Yijie-Shi0829)
 - [@BoYanZh](https://github.com/BoYanZh)
+- [@Yijie-Shi0829](https://github.com/Yijie-Shi0829)
 - Me!
