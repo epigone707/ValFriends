@@ -16,6 +16,7 @@ class ValStats(BaseModel):
   assists: int
   damage: int  # damage per round
   result: str  # 'Win' or 'Lose'
+  agent: str  # agent name
 
 
 class Profile(BaseModel):
@@ -41,8 +42,8 @@ def fetch_user_stats(fullname):
   logger.debug(response.json())
   v2_mmr = V2mmr(**response.json())
 
-  # get the stats for recent 3 competitive matches
-  matches_url = f"https://api.henrikdev.xyz/valorant/v1/lifetime/matches/na/{name}/{tag}?mode=competitive&size=3"
+  # get the stats for recent 5 competitive matches
+  matches_url = f"https://api.henrikdev.xyz/valorant/v1/lifetime/matches/na/{name}/{tag}?mode=competitive&size=5"
   logger.info(f"fetching data from {matches_url}")
   matches_response = requests.get(matches_url)
   logger.debug(matches_response.json())
@@ -61,14 +62,14 @@ def fetch_user_stats(fullname):
     profile.crank = data.current_data.currenttierpatched
     profile.elo = data.current_data.elo
     profile.recent_stats = [
-      ValStats(kills=match.stats.kills,
-               deaths=match.stats.deaths,
-               assists=match.stats.assists,
-               damage=match.stats.damage.made //
-               (match.teams.red + match.teams.blue),
-               result=get_match_result(match.stats.team, match.teams.red,
-                                       match.teams.blue))
-      for match in v1_lifetime_matches.data
+      ValStats(
+        kills=match.stats.kills,
+        deaths=match.stats.deaths,
+        assists=match.stats.assists,
+        damage=match.stats.damage.made // (match.teams.red + match.teams.blue),
+        result=get_match_result(match.stats.team, match.teams.red,
+                                match.teams.blue),
+        agent=match.stats.character.name) for match in v1_lifetime_matches.data
     ]
   return profile
 

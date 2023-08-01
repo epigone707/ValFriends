@@ -6,7 +6,6 @@ from logger import logger
 from models.users import users
 from settings import settings
 from utils import get_rank_order
-
 """
 For bot developers:
 
@@ -29,6 +28,7 @@ intents = disnake.Intents.default()
 intents.message_content = True
 command_sync_flags = commands.CommandSyncFlags.default()
 command_sync_flags.sync_commands_debug = True
+print(settings)
 
 bot = commands.Bot(command_prefix='!',
                    command_sync_flags=command_sync_flags,
@@ -93,11 +93,15 @@ async def allstats(inter: disnake.ApplicationCommandInteraction):
   await inter.response.send_message(embed=embed)
 
 
-async def autocomp_username(inter: disnake.ApplicationCommandInteraction, user_input: str):
-    return [user for user in users if user_input.lower() in user.lower()]
+async def autocomp_username(inter: disnake.ApplicationCommandInteraction,
+                            user_input: str):
+  return [user for user in users if user_input.lower() in user.lower()]
+
 
 @bot.slash_command(name="stats")
-async def stats(inter: disnake.ApplicationCommandInteraction, fullname: str = commands.Param(autocomplete=autocomp_username)):
+async def stats(
+  inter: disnake.ApplicationCommandInteraction,
+  fullname: str = commands.Param(autocomplete=autocomp_username)):
   """
   Get user's stats.
   
@@ -118,7 +122,7 @@ async def stats(inter: disnake.ApplicationCommandInteraction, fullname: str = co
     recent_c_performance = ""
     for valstats in res.recent_stats:
       kda = f"kda:{valstats.kills}/{valstats.deaths}/{valstats.assists}"
-      recent_c_performance += f"{valstats.result}  dmg:{valstats.damage} {kda}\n"
+      recent_c_performance += f"{valstats.result} {valstats.agent} dmg:{valstats.damage} {kda}\n"
     embed.add_field(name='Recent Competitive Performance',
                     value=recent_c_performance,
                     inline=True)
@@ -126,7 +130,9 @@ async def stats(inter: disnake.ApplicationCommandInteraction, fullname: str = co
 
 
 @bot.slash_command(name="expire")
-async def expire(inter: disnake.ApplicationCommandInteraction, fullname: str = commands.Param(autocomplete=autocomp_username)):
+async def expire(
+  inter: disnake.ApplicationCommandInteraction,
+  fullname: str = commands.Param(autocomplete=autocomp_username)):
   """
   Force expire user's stats.
   
@@ -150,7 +156,9 @@ async def allexpire(inter: disnake.ApplicationCommandInteraction):
 
 @bot.slash_command(name='delete')
 @commands.default_member_permissions(administrator=True)
-async def delete(inter: disnake.ApplicationCommandInteraction, fullname: str = commands.Param(autocomplete=autocomp_username)):
+async def delete(
+  inter: disnake.ApplicationCommandInteraction,
+  fullname: str = commands.Param(autocomplete=autocomp_username)):
   """
   Delete a user from the user list of this server (admin only).
   
