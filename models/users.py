@@ -25,6 +25,7 @@ class Profile(BaseModel):
   crank: Optional[str] = None
   elo: Optional[int] = None
   recent_stats: List[ValStats] = []
+  crank_img: Optional[str] = None
 
 
 def fetch_user_stats(fullname):
@@ -61,6 +62,7 @@ def fetch_user_stats(fullname):
     profile.hrank = data.highest_rank.patched_tier
     profile.crank = data.current_data.currenttierpatched
     profile.elo = data.current_data.elo
+    profile.crank_img = data.current_data.images.large
     profile.recent_stats = [
       ValStats(
         kills=match.stats.kills,

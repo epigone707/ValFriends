@@ -10,7 +10,7 @@ from utils import get_rank_order
 For bot developers:
 
 features proposed:
-- add rank icon to every rank shown in stats, allstats and crank. There is a icon url in the return json from API, just store it in the cache!
+
 
 features in progress:
 
@@ -21,6 +21,7 @@ features finished:
 - support help slash command. Need to show the info for each parameter when user clicks on it.
 - get user's recent matches stats like kda
 - autocomplete username
+- add rank icon to every rank shown in stats, allstats and crank. There is a icon url in the return json from API, just store it in the cache!
 
 """
 
@@ -111,12 +112,14 @@ async def stats(
   """
   res = users[fullname]
   logger.info(fullname)
-  logger.info(res)
+  # logger.info(res)
   embed = disnake.Embed(title=f"Stats of {res.fullname}",
                         color=disnake.Color.blue())
   embed.add_field(name='Highest rank', value=res.hrank, inline=True)
   embed.add_field(name='Current rank', value=res.crank, inline=True)
   embed.add_field(name='Elo', value=res.elo, inline=True)
+  if hasattr(res, 'crank_img') and res.crank_img:
+    embed.set_thumbnail(url=res.crank_img)
 
   if res.recent_stats:
     recent_c_performance = ""
