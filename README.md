@@ -14,7 +14,7 @@ Download and run:
 python3 main.py
 ```
 
-You need to set environment variables `SERVER_ID` and `TOKEN`(discord bot token) by creating an `.env` file. You can refer to `.env.example`.
+You need to set environment variables `TEST_SERVER_ID`(your discord server id, so that when you add new commands to this bot they can be loaded faster) and `TOKEN`(your discord bot token) by creating an `.env` file. You can refer to `.env.example`.
 
 We provides `keep_alive.py` in case you want to host the bot on [replit](https://replit.com/~).
 
