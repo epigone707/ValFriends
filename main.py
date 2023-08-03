@@ -51,7 +51,8 @@ async def hello(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     Responds with 'Hello World'. Used for testing.
     """
-    await inter.response.send_message(f"Hello World! {inter.author.mention}")
+    await inter.response.defer()
+    await inter.edit_original_response(f"Hello World! {inter.author.mention}")
 
 
 @bot.slash_command()
@@ -63,6 +64,7 @@ async def help(inter: disnake.ApplicationCommandInteraction, command: str = "") 
     ----------
     command: (Optional) The command you want to view the detailed help message.
     """
+    await inter.response.defer()
     embed = disnake.Embed(title="Commands Info", color=disnake.Color.blue())
     if command != "":
         for s_command in bot.slash_commands:
@@ -72,7 +74,7 @@ async def help(inter: disnake.ApplicationCommandInteraction, command: str = "") 
                     val += "\n"
                     val += option.name + " - " + option.description
                 embed.add_field(name=command, value=val, inline=True)
-                await inter.response.send_message(embed=embed)
+                await inter.edit_original_response(embed=embed)
                 return
         embed.description = f"Command {command} doesn't exist."
     else:
@@ -80,7 +82,7 @@ async def help(inter: disnake.ApplicationCommandInteraction, command: str = "") 
             embed.add_field(
                 name=s_command.name, value=s_command.description, inline=True
             )
-    await inter.response.send_message(embed=embed)
+    await inter.edit_original_response(embed=embed)
 
 
 @bot.slash_command(name="all_stats", description="Get all users' stats.")
@@ -88,6 +90,7 @@ async def all_stats(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     Get all users' stats.
     """
+    await inter.response.defer()
     embed = disnake.Embed(
         title="Stats of All Registered Users", color=disnake.Color.blue()
     )
@@ -95,7 +98,7 @@ async def all_stats(inter: disnake.ApplicationCommandInteraction) -> None:
         val_user: ValUser = val_users[key]
         val = f"Highest rank: {val_user.hrank}\nCurrent rank: {val_user.crank}\nElo: {val_user.elo}"
         embed.add_field(name=val_user.fullname, value=val, inline=True)
-    await inter.response.send_message(embed=embed)
+    await inter.edit_original_response(embed=embed)
 
 
 @bot.slash_command(name="stats")
@@ -109,6 +112,7 @@ async def stats(
     ----------
     fullname: The fullname of the player, should be in the form: <username>#<tag>.
     """
+    await inter.response.defer()
     res: ValUser = dc_users[inter.author.id].val_user
     logger.info(res)
     embed = disnake.Embed(title=f"Stats of {res.fullname}", color=disnake.Color.blue())
@@ -130,7 +134,7 @@ async def stats(
             value=recent_c_performance,
             inline=True,
         )
-    await inter.response.send_message(embed=embed)
+    await inter.edit_original_response(embed=embed)
 
 
 @bot.slash_command(name="expire")
@@ -140,7 +144,7 @@ async def expire(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     await inter.response.defer()
     val_users.expire(dc_users[inter.author.id].val_id)
-    await inter.edit_original_message("expire done")
+    await inter.edit_original_response("expire done")
 
 
 @bot.slash_command(name="all_expire")
@@ -151,7 +155,7 @@ async def all_val_expire(inter: disnake.ApplicationCommandInteraction) -> None:
     await inter.response.defer()
     for key in val_users.keys():
         val_users.expire(key)
-    await inter.edit_original_message("expire done")
+    await inter.edit_original_response("expire done")
 
 
 @bot.slash_command(name="all_delete")
@@ -160,9 +164,10 @@ async def all_delete(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     Delete all users from the user list of this server (admin only).
     """
+    await inter.response.defer()
     for fullname in val_users.keys():
         val_users.pop(fullname)
-    await inter.response.send_message("Successfully deleted all users from user list!")
+    await inter.edit_original_response("Successfully deleted all users from user list!")
 
 
 @bot.slash_command(name="review")
@@ -177,6 +182,7 @@ async def review(
     ----------
     game: The game you want to review.
     """
+    await inter.response.defer()
     game_description = ""
     if game == "apex":
         game_description = "Apex legends has been a trash game ever since I first played it in 2019.. the players are toxic, the map is shit, like it’s not cool or interesting to me, the guns do fuck all for damage and everything is all over the place to find.. and yeah the servers and controller aim assist do suck. After all, the current season is garbage."
@@ -188,7 +194,7 @@ async def review(
         description=game_description,
         color=disnake.Color.blue(),
     )
-    await inter.response.send_message(embed=embed)
+    await inter.edit_original_response(embed=embed)
 
 
 @bot.slash_command(name="crank")
@@ -200,11 +206,12 @@ async def crank(inter: disnake.ApplicationCommandInteraction, limit: int = 0) ->
     ----------
     limit: An integer value that represent how many users you want to print.
     """
+    await inter.response.defer()
     userList, rankList = get_rank_order(val_users, "crank", limit)
     embed = disnake.Embed(title="Current Ranks", color=disnake.Color.blue())
     embed.add_field(name="Val User", value="\n".join(userList), inline=True)
     embed.add_field(name="Rank", value="\n".join(rankList), inline=True)
-    await inter.response.send_message(embed=embed)
+    await inter.edit_original_response(embed=embed)
 
 
 @bot.slash_command(name="hrank")
@@ -216,11 +223,12 @@ async def hrank(inter: disnake.ApplicationCommandInteraction, limit: int = 0) ->
     ----------
     limit: An integer value that represent how many users you want to print.
     """
+    await inter.response.defer()
     userList, rankList = get_rank_order(val_users, "hrank", limit)
     embed = disnake.Embed(title="Highest Ranks", color=disnake.Color.blue())
     embed.add_field(name="Val User", value="\n".join(userList), inline=True)
     embed.add_field(name="Rank", value="\n".join(rankList), inline=True)
-    await inter.response.send_message(embed=embed)
+    await inter.edit_original_response(embed=embed)
 
 
 @bot.slash_command(name="bind_val")
