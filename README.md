@@ -2,16 +2,19 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg?style=for-the-badge)](#)
 [![disnake 2.9.0+](https://img.shields.io/badge/disnake-2.9.0+-blue.svg?style=for-the-badge)](#)
 
-A Discord bot for game Valorant, aims for helping you play with your friends happily. 
+A Discord bot for game Valorant, aims for helping you play with your friends happily.
 
-Just need a simple command to register your valorant account into the user list. You can easily view stats and rank info for everyone in the discord server. 
+Just need a simple command to register your valorant account into the user list. You can easily view stats and rank info for everyone in the discord server.
 
 
 ## Installation
 
+Install [Poetry](https://python-poetry.org/) first.
+
 Download and run:
 ```
-python3 main.py
+poetry install
+poetry run python3 main.py
 ```
 
 You need to set environment variables `TEST_SERVER_ID`(your discord server id, so that when you add new commands to this bot they can be loaded faster) and `TOKEN`(your discord bot token) by creating an `.env` file. You can refer to `.env.example`.
@@ -47,9 +50,9 @@ To print users in sorted order of lifetime highest rank, use `/hrank`.
 
 To print stats for all users, use `/allstats`
 
-Note that the profile for every user in the user list is cached in a sqlite database. When you execute `stats`, the bot actually returns the data in cache. 
+Note that the profile for every user in the user list is cached in a sqlite database. When you execute `stats`, the bot actually returns the data in cache.
 
-The bot generates a timestamp for every profile. The profile will expire after some time and the bot will fetched the up-to-date data from the API. 
+The bot generates a timestamp for every profile. The profile will expire after some time and the bot will fetched the up-to-date data from the API.
 
 You can also force the cache to update by using `/expire <valorant_name>#<valorant_tag>` or `/allexpire`.
 
