@@ -1,22 +1,23 @@
-from flask import Flask
-from threading import Thread
 import random
+from threading import Thread
 
-app = Flask('')
+from flask import Flask
 
-
-@app.route('/')
-def home():
-  return 'Im in!'
+app = Flask("")
 
 
-def run():
-  app.run(host='0.0.0.0', port=random.randint(2000, 9000))
+@app.route("/")
+def home() -> str:
+    return "Im in!"
 
 
-def keep_alive():
-  '''
-	Creates and starts new thread that runs the function run.
-	'''
-  t = Thread(target=run)
-  t.start()
+def run() -> None:
+    app.run(host="0.0.0.0", port=random.randint(2000, 9000))
+
+
+def keep_alive() -> None:
+    """
+    Creates and starts new thread that runs the function run.
+    """
+    t = Thread(target=run)
+    t.start()

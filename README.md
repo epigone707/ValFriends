@@ -11,10 +11,15 @@ Just need a simple command to register your valorant account into the user list.
 
 Install [Poetry](https://python-poetry.org/) first.
 
-Download and run:
+Run once for installing dependencies:
 ```
-poetry install
-poetry run python3 main.py
+poetry install --with dev
+```
+
+Enter poetry shell and run:
+```
+poetry shell
+python3 main.py
 ```
 
 You need to set environment variables `TEST_SERVER_ID`(your discord server id, so that when you add new commands to this bot they can be loaded faster) and `TOKEN`(your discord bot token) by creating an `.env` file. You can refer to `.env.example`.

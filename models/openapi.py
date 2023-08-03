@@ -4,1398 +4,1385 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
+from typing import List
 from uuid import UUID
 
 from pydantic import BaseModel, Field
 
 
 class Regions(Enum):
-  eu = "eu"
-  na = "na"
-  ap = "ap"
-  kr = "kr"
+    eu = "eu"
+    na = "na"
+    ap = "ap"
+    kr = "kr"
 
 
 class Affinities(Enum):
-  eu = "eu"
-  na = "na"
-  latam = "latam"
-  br = "br"
-  ap = "ap"
-  kr = "kr"
+    eu = "eu"
+    na = "na"
+    latam = "latam"
+    br = "br"
+    ap = "ap"
+    kr = "kr"
 
 
 class PremierConferences(Enum):
-  EU_CENTRAL_EAST = "EU_CENTRAL_EAST"
-  EU_WEST = "EU_WEST"
-  EU_MIDDLE_EAST = "EU_MIDDLE_EAST"
-  EU_TURKEY = "EU_TURKEY"
-  NA_US_EAST = "NA_US_EAST"
-  NA_US_WEST = "NA_US_WEST"
-  LATAM_NORTH = "LATAM_NORTH"
-  LATAM_SOUTH = "LATAM_SOUTH"
-  BR_BRAZIL = "BR_BRAZIL"
-  KR_KOREA = "KR_KOREA"
-  AP_ASIA = "AP_ASIA"
-  AP_JAPAN = "AP_JAPAN"
-  AP_OCEANIA = "AP_OCEANIA"
-  AP_SOUTH_ASIA = "AP_SOUTH_ASIA"
+    EU_CENTRAL_EAST = "EU_CENTRAL_EAST"
+    EU_WEST = "EU_WEST"
+    EU_MIDDLE_EAST = "EU_MIDDLE_EAST"
+    EU_TURKEY = "EU_TURKEY"
+    NA_US_EAST = "NA_US_EAST"
+    NA_US_WEST = "NA_US_WEST"
+    LATAM_NORTH = "LATAM_NORTH"
+    LATAM_SOUTH = "LATAM_SOUTH"
+    BR_BRAZIL = "BR_BRAZIL"
+    KR_KOREA = "KR_KOREA"
+    AP_ASIA = "AP_ASIA"
+    AP_JAPAN = "AP_JAPAN"
+    AP_OCEANIA = "AP_OCEANIA"
+    AP_SOUTH_ASIA = "AP_SOUTH_ASIA"
 
 
 class PremierSeasonsEventTypes(Enum):
-  LEAGUE = "LEAGUE"
-  TOURNAMENT = "TOURNAMENT"
+    LEAGUE = "LEAGUE"
+    TOURNAMENT = "TOURNAMENT"
 
 
 class PremierSeasonsEventMapSelectionTypes(Enum):
-  RANDOM = "RANDOM"
-  PICKBAN = "PICKBAN"
+    RANDOM = "RANDOM"
+    PICKBAN = "PICKBAN"
 
 
 class Maps(Enum):
-  Ascent = "Ascent"
-  Split = "Split"
-  Fracture = "Fracture"
-  Bind = "Bind"
-  Breeze = "Breeze"
-  District = "District"
-  Kasbah = "Kasbah"
-  Piazza = "Piazza"
-  Lotus = "Lotus"
-  Pearl = "Pearl"
-  Icebox = "Icebox"
-  Haven = "Haven"
+    Ascent = "Ascent"
+    Split = "Split"
+    Fracture = "Fracture"
+    Bind = "Bind"
+    Breeze = "Breeze"
+    District = "District"
+    Kasbah = "Kasbah"
+    Piazza = "Piazza"
+    Lotus = "Lotus"
+    Pearl = "Pearl"
+    Icebox = "Icebox"
+    Haven = "Haven"
 
 
 class Modes(Enum):
-  Competitive = "Competitive"
-  Custom_Game = "Custom Game"
-  Deathmatch = "Deathmatch"
-  Escalation = "Escalation"
-  Team_Deathmatch = "Team Deathmatch"
-  New_Map = "New Map"
-  Replication = "Replication"
-  Snowball_Fight = "Snowball Fight"
-  Spike_Rush = "Spike Rush"
-  Swiftplay = "Swiftplay"
-  Unrated = "Unrated"
+    Competitive = "Competitive"
+    Custom_Game = "Custom Game"
+    Deathmatch = "Deathmatch"
+    Escalation = "Escalation"
+    Team_Deathmatch = "Team Deathmatch"
+    New_Map = "New Map"
+    Replication = "Replication"
+    Snowball_Fight = "Snowball Fight"
+    Spike_Rush = "Spike Rush"
+    Swiftplay = "Swiftplay"
+    Unrated = "Unrated"
 
 
 class ModesApi(Enum):
-  competitive = "competitive"
-  custom = "custom"
-  deathmatch = "deathmatch"
-  escalation = "escalation"
-  teamdeathmatch = "teamdeathmatch"
-  newmap = "newmap"
-  replication = "replication"
-  snowballfight = "snowballfight"
-  spikerush = "spikerush"
-  swiftplay = "swiftplay"
-  unrated = "unrated"
+    competitive = "competitive"
+    custom = "custom"
+    deathmatch = "deathmatch"
+    escalation = "escalation"
+    teamdeathmatch = "teamdeathmatch"
+    newmap = "newmap"
+    replication = "replication"
+    snowballfight = "snowballfight"
+    spikerush = "spikerush"
+    swiftplay = "swiftplay"
+    unrated = "unrated"
 
 
 class ModeIds(Enum):
-  competitive = "competitive"
-  custom = "custom"
-  deathmatch = "deathmatch"
-  ggteam = "ggteam"
-  hurm = "hurm"
-  newmap = "newmap"
-  onefa = "onefa"
-  snowball = "snowball"
-  spikerush = "spikerush"
-  swiftplay = "swiftplay"
-  unrated = "unrated"
+    competitive = "competitive"
+    custom = "custom"
+    deathmatch = "deathmatch"
+    ggteam = "ggteam"
+    hurm = "hurm"
+    newmap = "newmap"
+    onefa = "onefa"
+    snowball = "snowball"
+    spikerush = "spikerush"
+    swiftplay = "swiftplay"
+    unrated = "unrated"
 
 
 class Tiers(Enum):
-  Unrated = "Unrated"
-  Unknown_1 = "Unknown 1"
-  Unknown_2 = "Unknown 2"
-  Iron_1 = "Iron 1"
-  Iron_2 = "Iron 2"
-  Iron_3 = "Iron 3"
-  Bronze_1 = "Bronze 1"
-  Bronze_2 = "Bronze 2"
-  Bronze_3 = "Bronze 3"
-  Silver_1 = "Silver 1"
-  Silver_2 = "Silver 2"
-  Silver_3 = "Silver 3"
-  Gold_1 = "Gold 1"
-  Gold_2 = "Gold 2"
-  Gold_3 = "Gold 3"
-  Platinum_1 = "Platinum 1"
-  Platinum_2 = "Platinum 2"
-  Platinum_3 = "Platinum 3"
-  Diamond_1 = "Diamond 1"
-  Diamond_2 = "Diamond 2"
-  Diamond_3 = "Diamond 3"
-  Ascendant_1 = "Ascendant 1"
-  Ascendant_2 = "Ascendant 2"
-  Ascendant_3 = "Ascendant 3"
-  Immortal_1 = "Immortal 1"
-  Immortal_2 = "Immortal 2"
-  Immortal_3 = "Immortal 3"
-  Radiant = "Radiant"
+    Unrated = "Unrated"
+    Unknown_1 = "Unknown 1"
+    Unknown_2 = "Unknown 2"
+    Iron_1 = "Iron 1"
+    Iron_2 = "Iron 2"
+    Iron_3 = "Iron 3"
+    Bronze_1 = "Bronze 1"
+    Bronze_2 = "Bronze 2"
+    Bronze_3 = "Bronze 3"
+    Silver_1 = "Silver 1"
+    Silver_2 = "Silver 2"
+    Silver_3 = "Silver 3"
+    Gold_1 = "Gold 1"
+    Gold_2 = "Gold 2"
+    Gold_3 = "Gold 3"
+    Platinum_1 = "Platinum 1"
+    Platinum_2 = "Platinum 2"
+    Platinum_3 = "Platinum 3"
+    Diamond_1 = "Diamond 1"
+    Diamond_2 = "Diamond 2"
+    Diamond_3 = "Diamond 3"
+    Ascendant_1 = "Ascendant 1"
+    Ascendant_2 = "Ascendant 2"
+    Ascendant_3 = "Ascendant 3"
+    Immortal_1 = "Immortal 1"
+    Immortal_2 = "Immortal 2"
+    Immortal_3 = "Immortal 3"
+    Radiant = "Radiant"
 
 
 class TiersOld(Enum):
-  Unrated = "Unrated"
-  Unknown_1 = "Unknown 1"
-  Unknown_2 = "Unknown 2"
-  Iron_1 = "Iron 1"
-  Iron_2 = "Iron 2"
-  Iron_3 = "Iron 3"
-  Bronze_1 = "Bronze 1"
-  Bronze_2 = "Bronze 2"
-  Bronze_3 = "Bronze 3"
-  Silver_1 = "Silver 1"
-  Silver_2 = "Silver 2"
-  Silver_3 = "Silver 3"
-  Gold_1 = "Gold 1"
-  Gold_2 = "Gold 2"
-  Gold_3 = "Gold 3"
-  Platinum_1 = "Platinum 1"
-  Platinum_2 = "Platinum 2"
-  Platinum_3 = "Platinum 3"
-  Diamond_1 = "Diamond 1"
-  Diamond_2 = "Diamond 2"
-  Diamond_3 = "Diamond 3"
-  Immortal_1 = "Immortal 1"
-  Immortal_2 = "Immortal 2"
-  Immortal_3 = "Immortal 3"
-  Radiant = "Radiant"
+    Unrated = "Unrated"
+    Unknown_1 = "Unknown 1"
+    Unknown_2 = "Unknown 2"
+    Iron_1 = "Iron 1"
+    Iron_2 = "Iron 2"
+    Iron_3 = "Iron 3"
+    Bronze_1 = "Bronze 1"
+    Bronze_2 = "Bronze 2"
+    Bronze_3 = "Bronze 3"
+    Silver_1 = "Silver 1"
+    Silver_2 = "Silver 2"
+    Silver_3 = "Silver 3"
+    Gold_1 = "Gold 1"
+    Gold_2 = "Gold 2"
+    Gold_3 = "Gold 3"
+    Platinum_1 = "Platinum 1"
+    Platinum_2 = "Platinum 2"
+    Platinum_3 = "Platinum 3"
+    Diamond_1 = "Diamond 1"
+    Diamond_2 = "Diamond 2"
+    Diamond_3 = "Diamond 3"
+    Immortal_1 = "Immortal 1"
+    Immortal_2 = "Immortal 2"
+    Immortal_3 = "Immortal 3"
+    Radiant = "Radiant"
 
 
 class Platforms(Enum):
-  PC = "PC"
-  Console = "Console"
+    PC = "PC"
+    Console = "Console"
 
 
 class Seasons(Enum):
-  e1a1 = "e1a1"
-  e1a2 = "e1a2"
-  e1a3 = "e1a3"
-  e2a1 = "e2a1"
-  e2a2 = "e2a2"
-  e2a3 = "e2a3"
-  e3a1 = "e3a1"
-  e3a2 = "e3a2"
-  e3a3 = "e3a3"
-  e4a1 = "e4a1"
-  e4a2 = "e4a2"
-  e4a3 = "e4a3"
-  e5a1 = "e5a1"
-  e5a2 = "e5a2"
-  e5a3 = "e5a3"
-  e6a1 = "e6a1"
-  e6a2 = "e6a2"
-  e6a3 = "e6a3"
-  e7a1 = "e7a1"
-  e7a2 = "e7a2"
-  e7a3 = "e7a3"
+    e1a1 = "e1a1"
+    e1a2 = "e1a2"
+    e1a3 = "e1a3"
+    e2a1 = "e2a1"
+    e2a2 = "e2a2"
+    e2a3 = "e2a3"
+    e3a1 = "e3a1"
+    e3a2 = "e3a2"
+    e3a3 = "e3a3"
+    e4a1 = "e4a1"
+    e4a2 = "e4a2"
+    e4a3 = "e4a3"
+    e5a1 = "e5a1"
+    e5a2 = "e5a2"
+    e5a3 = "e5a3"
+    e6a1 = "e6a1"
+    e6a2 = "e6a2"
+    e6a3 = "e6a3"
+    e7a1 = "e7a1"
+    e7a2 = "e7a2"
+    e7a3 = "e7a3"
 
 
 class ActRankWin(BaseModel):
-  patched_tier: Optional[str] = Field(None, examples=["Gold 1"])
-  tier: Optional[int] = Field(None, examples=[12])
+    patched_tier: str | None = Field(None, examples=["Gold 1"])
+    tier: int | None = Field(None, examples=[12])
 
 
 class BySeason(BaseModel):
-  error: Optional[str | bool] = Field(None)
-  wins: Optional[int] = Field(None, examples=[12])
-  number_of_games: Optional[int] = Field(None, examples=[24])
-  final_rank: Optional[int] = Field(None, examples=[12])
-  final_rank_patched: Optional[str] = Field(None, examples=["Gold 1"])
-  act_rank_wins: Optional[List[ActRankWin]] = None
-  old: Optional[bool] = Field(None, examples=[True])
+    error: str | bool | None = Field(None)
+    wins: int | None = Field(None, examples=[12])
+    number_of_games: int | None = Field(None, examples=[24])
+    final_rank: int | None = Field(None, examples=[12])
+    final_rank_patched: str | None = Field(None, examples=["Gold 1"])
+    act_rank_wins: list[ActRankWin] | None = None
+    old: bool | None = Field(None, examples=[True])
 
 
 class SessionPlaytime(BaseModel):
-  minutes: Optional[int] = Field(None, examples=[26])
-  seconds: Optional[int] = Field(None, examples=[1560])
-  milliseconds: Optional[int] = Field(None, examples=[1560000])
+    minutes: int | None = Field(None, examples=[26])
+    seconds: int | None = Field(None, examples=[1560])
+    milliseconds: int | None = Field(None, examples=[1560000])
 
 
 class Card(BaseModel):
-  small: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/playercards/8edf22c5-4489-ab41-769a-07adb4c454d6/smallart.png"
-    ],
-  )
-  large: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/playercards/8edf22c5-4489-ab41-769a-07adb4c454d6/largeart.png"
-    ],
-  )
-  wide: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/playercards/8edf22c5-4489-ab41-769a-07adb4c454d6/wideart.png"
-    ],
-  )
+    small: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/playercards/8edf22c5-4489-ab41-769a-07adb4c454d6/smallart.png"
+        ],
+    )
+    large: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/playercards/8edf22c5-4489-ab41-769a-07adb4c454d6/largeart.png"
+        ],
+    )
+    wide: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/playercards/8edf22c5-4489-ab41-769a-07adb4c454d6/wideart.png"
+        ],
+    )
 
 
 class Agent(BaseModel):
-  small: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/displayicon.png"
-    ],
-  )
-  full: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/fullportrait.png"
-    ],
-  )
-  bust: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/bustportrait.png"
-    ],
-  )
-  killfeed: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/killfeedportrait.png"
-    ],
-  )
+    small: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/displayicon.png"
+        ],
+    )
+    full: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/fullportrait.png"
+        ],
+    )
+    bust: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/bustportrait.png"
+        ],
+    )
+    killfeed: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/agents/320b2a48-4d9b-a075-30f1-1f93a9b638fa/killfeedportrait.png"
+        ],
+    )
 
 
 class Assets(BaseModel):
-  card: Optional[Card] = None
-  agent: Optional[Agent] = None
+    card: Card | None = None
+    agent: Agent | None = None
 
 
 class FriendlyFire(BaseModel):
-  incoming: Optional[int] = Field(None, examples=[0])
-  outgoing: Optional[int] = Field(None, examples=[0])
+    incoming: int | None = Field(None, examples=[0])
+    outgoing: int | None = Field(None, examples=[0])
 
 
 class Behaviour(BaseModel):
-  afk_rounds: Optional[int] = Field(None, examples=[0])
-  friendly_fire: Optional[FriendlyFire] = None
-  rounds_in_spawn: Optional[int] = Field(None, examples=[0])
+    afk_rounds: int | None = Field(None, examples=[0])
+    friendly_fire: FriendlyFire | None = None
+    rounds_in_spawn: int | None = Field(None, examples=[0])
 
 
 class Os(BaseModel):
-  name: Optional[str] = Field(None, examples=["Windows"])
-  version: Optional[str] = Field(None, examples=["10.0.22000.1.768.64bit"])
+    name: str | None = Field(None, examples=["Windows"])
+    version: str | None = Field(None, examples=["10.0.22000.1.768.64bit"])
 
 
 class Platform(BaseModel):
-  type: Optional[str] = Field(None, examples=["PC"])
-  os: Optional[Os] = None
+    type: str | None = Field(None, examples=["PC"])
+    os: Os | None = None
 
 
 class AbilityCasts(BaseModel):
-  c_cast: Optional[int] = Field(None, examples=[16])
-  q_cast: Optional[int] = Field(None, examples=[5])
-  e_cast: Optional[int] = Field(None, examples=[26])
-  x_cast: Optional[int] = Field(None, examples=[0])
+    c_cast: int | None = Field(None, examples=[16])
+    q_cast: int | None = Field(None, examples=[5])
+    e_cast: int | None = Field(None, examples=[26])
+    x_cast: int | None = Field(None, examples=[0])
 
 
 class Stats(BaseModel):
-  score: Optional[int] = Field(None, examples=[4869])
-  kills: Optional[int] = Field(None, examples=[18])
-  deaths: Optional[int] = Field(None, examples=[18])
-  assists: Optional[int] = Field(None, examples=[5])
-  bodyshots: Optional[int] = Field(None, examples=[48])
-  headshots: Optional[int] = Field(None, examples=[9])
-  legshots: Optional[int] = Field(None, examples=[5])
+    score: int | None = Field(None, examples=[4869])
+    kills: int | None = Field(None, examples=[18])
+    deaths: int | None = Field(None, examples=[18])
+    assists: int | None = Field(None, examples=[5])
+    bodyshots: int | None = Field(None, examples=[48])
+    headshots: int | None = Field(None, examples=[9])
+    legshots: int | None = Field(None, examples=[5])
 
 
 class Spent(BaseModel):
-  overall: Optional[int] = Field(None, examples=[59750])
-  average: Optional[int] = Field(None, examples=[2598])
+    overall: int | None = Field(None, examples=[59750])
+    average: int | None = Field(None, examples=[2598])
 
 
 class LoadoutValue(BaseModel):
-  overall: Optional[int] = Field(None, examples=[71700])
-  average: Optional[int] = Field(None, examples=[3117])
+    overall: int | None = Field(None, examples=[71700])
+    average: int | None = Field(None, examples=[3117])
 
 
 class Economy(BaseModel):
-  spent: Optional[Spent] = None
-  loadout_value: Optional[LoadoutValue] = None
+    spent: Spent | None = None
+    loadout_value: LoadoutValue | None = None
 
 
 class Player(BaseModel):
-  puuid: Optional[str] = Field(
-    None, examples=["54942ced-1967-5f66-8a16-1e0dae875641"])
-  name: Optional[str] = Field(None, examples=["Henrik3"])
-  tag: Optional[str] = Field(None, examples=["EUW3"])
-  team: Optional[str] = Field(None, examples=["Red"])
-  level: Optional[int] = Field(None, examples=[104])
-  character: Optional[str] = Field(None, examples=["Sova"])
-  currenttier: Optional[int] = Field(None, examples=[12])
-  currenttier_patched: Optional[str] = Field(None, examples=["Gold 1"])
-  player_card: Optional[str] = Field(
-    None, examples=["8edf22c5-4489-ab41-769a-07adb4c454d6"])
-  player_title: Optional[str] = Field(
-    None, examples=["e3ca05a4-4e44-9afe-3791-7d96ca8f71fa"])
-  party_id: Optional[str] = Field(
-    None, examples=["b7590bd4-e2c9-4dd3-8cbf-05f04158375e"])
-  session_playtime: Optional[SessionPlaytime] = None
-  assets: Optional[Assets] = None
-  behaviour: Optional[Behaviour] = None
-  platform: Optional[Platform] = None
-  ability_casts: Optional[AbilityCasts] = None
-  stats: Optional[Stats] = None
-  economy: Optional[Economy] = None
-  damage_made: Optional[int] = Field(None, examples=[3067])
-  damage_received: Optional[int] = Field(None, examples=[3115])
+    puuid: str | None = Field(None, examples=["54942ced-1967-5f66-8a16-1e0dae875641"])
+    name: str | None = Field(None, examples=["Henrik3"])
+    tag: str | None = Field(None, examples=["EUW3"])
+    team: str | None = Field(None, examples=["Red"])
+    level: int | None = Field(None, examples=[104])
+    character: str | None = Field(None, examples=["Sova"])
+    currenttier: int | None = Field(None, examples=[12])
+    currenttier_patched: str | None = Field(None, examples=["Gold 1"])
+    player_card: str | None = Field(
+        None, examples=["8edf22c5-4489-ab41-769a-07adb4c454d6"]
+    )
+    player_title: str | None = Field(
+        None, examples=["e3ca05a4-4e44-9afe-3791-7d96ca8f71fa"]
+    )
+    party_id: str | None = Field(
+        None, examples=["b7590bd4-e2c9-4dd3-8cbf-05f04158375e"]
+    )
+    session_playtime: SessionPlaytime | None = None
+    assets: Assets | None = None
+    behaviour: Behaviour | None = None
+    platform: Platform | None = None
+    ability_casts: AbilityCasts | None = None
+    stats: Stats | None = None
+    economy: Economy | None = None
+    damage_made: int | None = Field(None, examples=[3067])
+    damage_received: int | None = Field(None, examples=[3115])
 
 
 class Platform1(Platform):
-  pass
+    pass
 
 
 class Observer(BaseModel):
-  puuid: Optional[UUID] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
-  platform: Optional[Platform1] = None
-  session_playtime: Optional[SessionPlaytime] = None
-  team: Optional[str] = None
-  level: Optional[float] = None
-  player_card: Optional[UUID] = None
-  player_title: Optional[UUID] = None
-  party_id: Optional[UUID] = None
+    puuid: UUID | None = None
+    name: str | None = None
+    tag: str | None = None
+    platform: Platform1 | None = None
+    session_playtime: SessionPlaytime | None = None
+    team: str | None = None
+    level: float | None = None
+    player_card: UUID | None = None
+    player_title: UUID | None = None
+    party_id: UUID | None = None
 
 
 class Coach(BaseModel):
-  puuid: Optional[UUID] = None
-  team: Optional[str] = None
+    puuid: UUID | None = None
+    team: str | None = None
 
 
 class Customization(BaseModel):
-  icon: Optional[str] = None
-  image: Optional[str] = None
-  primary: Optional[str] = None
-  secondary: Optional[str] = None
-  tertiary: Optional[str] = None
+    icon: str | None = None
+    image: str | None = None
+    primary: str | None = None
+    secondary: str | None = None
+    tertiary: str | None = None
 
 
 class Roaster(BaseModel):
-  members: Optional[List[str]] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
-  customization: Optional[Customization] = None
+    members: list[str] | None = None
+    name: str | None = None
+    tag: str | None = None
+    customization: Customization | None = None
 
 
 class Team(BaseModel):
-  has_won: Optional[bool] = Field(None, examples=[True])
-  rounds_won: Optional[int] = Field(None, examples=[13])
-  rounds_lost: Optional[int] = Field(None, examples=[10])
-  roaster: Optional[Roaster] = None
+    has_won: bool | None = Field(None, examples=[True])
+    rounds_won: int | None = Field(None, examples=[13])
+    rounds_lost: int | None = Field(None, examples=[10])
+    roaster: Roaster | None = None
 
 
 class PremierInfo(BaseModel):
-  tournament_id: Optional[str] = None
-  matchup_id: Optional[str] = None
+    tournament_id: str | None = None
+    matchup_id: str | None = None
 
 
 class Metadata(BaseModel):
-  map: Optional[Maps] = None
-  game_version: Optional[str] = Field(
-    None, examples=["release-03.12-shipping-16-649370"])
-  game_length: Optional[int] = Field(None, examples=[2356581])
-  game_start: Optional[int] = Field(None, examples=[1641934366])
-  game_start_patched: Optional[str] = Field(
-    None, examples=["Tuesday, January 11 2022 9:52 PM"])
-  rounds_played: Optional[int] = Field(None, examples=[23])
-  mode: Optional[Modes] = None
-  mode_id: Optional[ModeIds] = None
-  queue: Optional[str] = Field(None, examples=["Standard"])
-  season_id: Optional[UUID] = None
-  platform: Optional[str] = Field(None, examples=["PC"])
-  matchid: Optional[UUID] = None
-  premier_info: Optional[PremierInfo] = None
-  region: Optional[Regions] = None
-  cluster: Optional[str] = Field(None, examples=["London"])
+    map: Maps | None = None
+    game_version: str | None = Field(
+        None, examples=["release-03.12-shipping-16-649370"]
+    )
+    game_length: int | None = Field(None, examples=[2356581])
+    game_start: int | None = Field(None, examples=[1641934366])
+    game_start_patched: str | None = Field(
+        None, examples=["Tuesday, January 11 2022 9:52 PM"]
+    )
+    rounds_played: int | None = Field(None, examples=[23])
+    mode: Modes | None = None
+    mode_id: ModeIds | None = None
+    queue: str | None = Field(None, examples=["Standard"])
+    season_id: UUID | None = None
+    platform: str | None = Field(None, examples=["PC"])
+    matchid: UUID | None = None
+    premier_info: PremierInfo | None = None
+    region: Regions | None = None
+    cluster: str | None = Field(None, examples=["London"])
 
 
 class Players(BaseModel):
-  all_players: Optional[List[Player]] = None
-  red: Optional[List[Player]] = None
-  blue: Optional[List[Player]] = None
+    all_players: list[Player] | None = None
+    red: list[Player] | None = None
+    blue: list[Player] | None = None
 
 
 class Teams(BaseModel):
-  red: Optional[Team] = None
-  blue: Optional[Team] = None
+    red: Team | None = None
+    blue: Team | None = None
 
 
 class PlantLocation(BaseModel):
-  x: Optional[int] = Field(None, examples=[-1325])
-  y: Optional[int] = Field(None, examples=[-1325])
+    x: int | None = Field(None, examples=[-1325])
+    y: int | None = Field(None, examples=[-1325])
 
 
 class PlantedBy(BaseModel):
-  puuid: Optional[str] = Field(
-    None, examples=["54942ced-1967-5f66-8a16-1e0dae875641"])
-  display_name: Optional[str] = Field(None, examples=["Henrik3#EUW3"])
-  team: Optional[str] = Field(None, examples=["Red"])
+    puuid: str | None = Field(None, examples=["54942ced-1967-5f66-8a16-1e0dae875641"])
+    display_name: str | None = Field(None, examples=["Henrik3#EUW3"])
+    team: str | None = Field(None, examples=["Red"])
 
 
 class Location(BaseModel):
-  x: Optional[int] = Field(None, examples=[5177])
-  y: Optional[int] = Field(None, examples=[-8908])
+    x: int | None = Field(None, examples=[5177])
+    y: int | None = Field(None, examples=[-8908])
 
 
 class PlayerLocationsOnPlantItem(BaseModel):
-  player_puuid: Optional[str] = Field(
-    None,
-    examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
-  )
-  player_display_name: Optional[str] = Field(None, examples=["Henrik3#EUW3"])
-  player_team: Optional[str] = Field(None, examples=["Red"])
-  location: Optional[Location] = None
-  view_radians: Optional[float] = Field(None, examples=[0.5277854])
+    player_puuid: str | None = Field(
+        None,
+        examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
+    )
+    player_display_name: str | None = Field(None, examples=["Henrik3#EUW3"])
+    player_team: str | None = Field(None, examples=["Red"])
+    location: Location | None = None
+    view_radians: float | None = Field(None, examples=[0.5277854])
 
 
 class PlantEvents(BaseModel):
-  plant_location: Optional[PlantLocation] = None
-  planted_by: Optional[PlantedBy] = None
-  plant_site: Optional[str] = Field(None, examples=["A"])
-  plant_time_in_round: Optional[int] = Field(None, examples=[26345])
-  player_locations_on_plant: Optional[List[PlayerLocationsOnPlantItem]] = None
+    plant_location: PlantLocation | None = None
+    planted_by: PlantedBy | None = None
+    plant_site: str | None = Field(None, examples=["A"])
+    plant_time_in_round: int | None = Field(None, examples=[26345])
+    player_locations_on_plant: list[PlayerLocationsOnPlantItem] | None = None
 
 
 class DefuseLocation(PlantLocation):
-  pass
+    pass
 
 
 class DefusedBy(PlantedBy):
-  pass
+    pass
 
 
 class PlayerLocationsOnDefuseItem(PlayerLocationsOnPlantItem):
-  pass
+    pass
 
 
 class DefuseEvents(BaseModel):
-  defuse_location: Optional[DefuseLocation] = None
-  defused_by: Optional[DefusedBy] = None
-  defuse_time_in_round: Optional[int] = Field(None, examples=[26345])
-  player_locations_on_defuse: Optional[
-    List[PlayerLocationsOnDefuseItem]] = None
+    defuse_location: DefuseLocation | None = None
+    defused_by: DefusedBy | None = None
+    defuse_time_in_round: int | None = Field(None, examples=[26345])
+    player_locations_on_defuse: None | (list[PlayerLocationsOnDefuseItem]) = None
 
 
 class AbilityCasts1(BaseModel):
-  c_casts: Optional[int] = Field(None, examples=[2])
-  q_casts: Optional[int] = Field(None, examples=[5])
-  e_casts: Optional[int] = Field(None, examples=[20])
-  x_casts: Optional[int] = Field(None, examples=[1])
+    c_casts: int | None = Field(None, examples=[2])
+    q_casts: int | None = Field(None, examples=[5])
+    e_casts: int | None = Field(None, examples=[20])
+    x_casts: int | None = Field(None, examples=[1])
 
 
 class DamageEvent(BaseModel):
-  receiver_puuid: Optional[str] = Field(
-    None,
-    examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
-  )
-  receiver_display_name: Optional[str] = Field(None, examples=["Henrik3#EUW3"])
-  receiver_team: Optional[str] = Field(None, examples=["Red"])
-  bodyshots: Optional[int] = Field(None, examples=[3])
-  damage: Optional[int] = Field(None, examples=[156])
-  headshots: Optional[int] = Field(None, examples=[1])
-  legshots: Optional[int] = Field(None, examples=[0])
+    receiver_puuid: str | None = Field(
+        None,
+        examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
+    )
+    receiver_display_name: str | None = Field(None, examples=["Henrik3#EUW3"])
+    receiver_team: str | None = Field(None, examples=["Red"])
+    bodyshots: int | None = Field(None, examples=[3])
+    damage: int | None = Field(None, examples=[156])
+    headshots: int | None = Field(None, examples=[1])
+    legshots: int | None = Field(None, examples=[0])
 
 
 class VictimDeathLocation(BaseModel):
-  x: Optional[int] = Field(None, examples=[7266])
-  y: Optional[int] = Field(None, examples=[-5096])
+    x: int | None = Field(None, examples=[7266])
+    y: int | None = Field(None, examples=[-5096])
 
 
 class DamageWeaponAssets(BaseModel):
-  display_icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/weapons/9c82e19d-4575-0200-1a81-3eacf00cf872/displayicon.png"
-    ],
-  )
-  killfeed_icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/weapons/9c82e19d-4575-0200-1a81-3eacf00cf872/killstreamicon.png"
-    ],
-  )
+    display_icon: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/weapons/9c82e19d-4575-0200-1a81-3eacf00cf872/displayicon.png"
+        ],
+    )
+    killfeed_icon: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/weapons/9c82e19d-4575-0200-1a81-3eacf00cf872/killstreamicon.png"
+        ],
+    )
 
 
 class PlayerLocationsOnKillItem(PlayerLocationsOnPlantItem):
-  pass
+    pass
 
 
 class Assistant(BaseModel):
-  assistant_puuid: Optional[str] = Field(
-    None,
-    examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
-  )
-  assistant_display_name: Optional[str] = Field(None,
-                                                examples=["Henrik3#EUW3"])
-  assistant_team: Optional[str] = Field(None, examples=["Red"])
+    assistant_puuid: str | None = Field(
+        None,
+        examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
+    )
+    assistant_display_name: str | None = Field(None, examples=["Henrik3#EUW3"])
+    assistant_team: str | None = Field(None, examples=["Red"])
 
 
 class KillEvent(BaseModel):
-  kill_time_in_round: Optional[int] = Field(None, examples=[43163])
-  kill_time_in_match: Optional[int] = Field(None, examples=[890501])
-  killer_puuid: Optional[str] = Field(
-    None,
-    examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
-  )
-  killer_display_name: Optional[str] = Field(None, examples=["Henrik3#EUW3"])
-  killer_team: Optional[str] = Field(None, examples=["Red"])
-  victim_puuid: Optional[str] = Field(
-    None,
-    examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
-  )
-  victim_display_name: Optional[str] = Field(None, examples=["Henrik3#EUW3"])
-  victim_team: Optional[str] = Field(None, examples=["Red"])
-  victim_death_location: Optional[VictimDeathLocation] = None
-  damage_weapon_id: Optional[str] = Field(
-    None,
-    examples=["9C82E19D-4575-0200-1A81-3EACF00CF872"],
-  )
-  damage_weapon_name: Optional[str] = Field(None, examples=["Vandal"])
-  damage_weapon_assets: Optional[DamageWeaponAssets] = None
-  secondary_fire_mode: Optional[bool] = Field(None, examples=[False])
-  player_locations_on_kill: Optional[List[PlayerLocationsOnKillItem]] = []
-  assistants: Optional[List[Assistant]] = []
+    kill_time_in_round: int | None = Field(None, examples=[43163])
+    kill_time_in_match: int | None = Field(None, examples=[890501])
+    killer_puuid: str | None = Field(
+        None,
+        examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
+    )
+    killer_display_name: str | None = Field(None, examples=["Henrik3#EUW3"])
+    killer_team: str | None = Field(None, examples=["Red"])
+    victim_puuid: str | None = Field(
+        None,
+        examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
+    )
+    victim_display_name: str | None = Field(None, examples=["Henrik3#EUW3"])
+    victim_team: str | None = Field(None, examples=["Red"])
+    victim_death_location: VictimDeathLocation | None = None
+    damage_weapon_id: str | None = Field(
+        None,
+        examples=["9C82E19D-4575-0200-1A81-3EACF00CF872"],
+    )
+    damage_weapon_name: str | None = Field(None, examples=["Vandal"])
+    damage_weapon_assets: DamageWeaponAssets | None = None
+    secondary_fire_mode: bool | None = Field(None, examples=[False])
+    player_locations_on_kill: list[PlayerLocationsOnKillItem] | None = []
+    assistants: list[Assistant] | None = []
 
 
 class Assets1(BaseModel):
-  display_icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/weapons/462080d1-4035-2937-7c09-27aa2a5c27a7/displayicon.png"
-    ],
-  )
-  killfeed_icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/weapons/462080d1-4035-2937-7c09-27aa2a5c27a7/killstreamicon.png"
-    ],
-  )
+    display_icon: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/weapons/462080d1-4035-2937-7c09-27aa2a5c27a7/displayicon.png"
+        ],
+    )
+    killfeed_icon: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/weapons/462080d1-4035-2937-7c09-27aa2a5c27a7/killstreamicon.png"
+        ],
+    )
 
 
 class Weapon(BaseModel):
-  id: Optional[str] = Field(None,
-                            examples=["462080D1-4035-2937-7C09-27AA2A5C27A7"])
-  name: Optional[str] = Field(None, examples=["Spectre"])
-  assets: Optional[Assets1] = None
+    id: str | None = Field(None, examples=["462080D1-4035-2937-7C09-27AA2A5C27A7"])
+    name: str | None = Field(None, examples=["Spectre"])
+    assets: Assets1 | None = None
 
 
 class Assets2(BaseModel):
-  display_icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/gear/822bcab2-40a2-324e-c137-e09195ad7692/displayicon.png"
-    ],
-  )
+    display_icon: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/gear/822bcab2-40a2-324e-c137-e09195ad7692/displayicon.png"
+        ],
+    )
 
 
 class Armor(BaseModel):
-  id: Optional[str] = Field(None,
-                            examples=["822BCAB2-40A2-324E-C137-E09195AD7692"])
-  name: Optional[str] = Field(None, examples=["Heavy Shields"])
-  assets: Optional[Assets2] = None
+    id: str | None = Field(None, examples=["822BCAB2-40A2-324E-C137-E09195AD7692"])
+    name: str | None = Field(None, examples=["Heavy Shields"])
+    assets: Assets2 | None = None
 
 
 class Economy1(BaseModel):
-  loadout_value: Optional[int] = Field(None, examples=[3900])
-  weapon: Optional[Weapon] = None
-  armor: Optional[Armor] = None
-  remaining: Optional[int] = Field(None, examples=[5300])
-  spent: Optional[int] = Field(None, examples=[1550])
+    loadout_value: int | None = Field(None, examples=[3900])
+    weapon: Weapon | None = None
+    armor: Armor | None = None
+    remaining: int | None = Field(None, examples=[5300])
+    spent: int | None = Field(None, examples=[1550])
 
 
 class PlayerStat(BaseModel):
-  ability_casts: Optional[AbilityCasts1] = None
-  player_puuid: Optional[str] = Field(
-    None,
-    examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
-  )
-  player_display_name: Optional[str] = Field(None, examples=["Henrik3#EUW3"])
-  player_team: Optional[str] = Field(None, examples=["Red"])
-  damage_events: Optional[List[DamageEvent]] = []
-  damage: Optional[int] = Field(None, examples=[282])
-  bodyshots: Optional[int] = Field(None, examples=[7])
-  headshots: Optional[int] = Field(None, examples=[1])
-  legshots: Optional[int] = Field(None, examples=[1])
-  kill_events: Optional[List[KillEvent]] = []
-  kills: Optional[int] = Field(None, examples=[2])
-  score: Optional[int] = Field(None, examples=[430])
-  economy: Optional[Economy1] = None
-  was_afk: Optional[bool] = Field(None, examples=[False])
-  was_penalized: Optional[bool] = Field(None, examples=[False])
-  stayed_in_spawn: Optional[bool] = Field(None, examples=[False])
+    ability_casts: AbilityCasts1 | None = None
+    player_puuid: str | None = Field(
+        None,
+        examples=["54942ced-1967-5f66-8a16-1e0dae875641"],
+    )
+    player_display_name: str | None = Field(None, examples=["Henrik3#EUW3"])
+    player_team: str | None = Field(None, examples=["Red"])
+    damage_events: list[DamageEvent] | None = []
+    damage: int | None = Field(None, examples=[282])
+    bodyshots: int | None = Field(None, examples=[7])
+    headshots: int | None = Field(None, examples=[1])
+    legshots: int | None = Field(None, examples=[1])
+    kill_events: list[KillEvent] | None = []
+    kills: int | None = Field(None, examples=[2])
+    score: int | None = Field(None, examples=[430])
+    economy: Economy1 | None = None
+    was_afk: bool | None = Field(None, examples=[False])
+    was_penalized: bool | None = Field(None, examples=[False])
+    stayed_in_spawn: bool | None = Field(None, examples=[False])
 
 
 class Round(BaseModel):
-  winning_team: Optional[str] = Field(None, examples=["Red"])
-  end_type: Optional[str] = Field(None, examples=["Eliminated"])
-  bomb_planted: Optional[bool] = Field(None, examples=[True])
-  bomb_defused: Optional[bool] = Field(None, examples=[False])
-  plant_events: Optional[PlantEvents] = None
-  defuse_events: Optional[DefuseEvents] = None
-  player_stats: Optional[List[PlayerStat]] = None
+    winning_team: str | None = Field(None, examples=["Red"])
+    end_type: str | None = Field(None, examples=["Eliminated"])
+    bomb_planted: bool | None = Field(None, examples=[True])
+    bomb_defused: bool | None = Field(None, examples=[False])
+    plant_events: PlantEvents | None = None
+    defuse_events: DefuseEvents | None = None
+    player_stats: list[PlayerStat] | None = None
 
 
 class Match(BaseModel):
-  metadata: Optional[Metadata] = None
-  players: Optional[Players] = None
-  observers: Optional[List[Observer]] = None
-  coaches: Optional[List[Coach]] = None
-  teams: Optional[Teams] = None
-  rounds: Optional[List[Round]] = None
+    metadata: Metadata | None = None
+    players: Players | None = None
+    observers: list[Observer] | None = None
+    coaches: list[Coach] | None = None
+    teams: Teams | None = None
+    rounds: list[Round] | None = None
 
 
 class LocalizedName(BaseModel):
-  ar_AE: Optional[str] = Field(None, alias="ar-AE")
-  de_DE: Optional[str] = Field(None, alias="de-DE")
-  en_GB: Optional[str] = Field(None, alias="en-GB")
-  en_US: Optional[str] = Field(None, alias="en-US")
-  es_ES: Optional[str] = Field(None, alias="es-ES")
-  es_MX: Optional[str] = Field(None, alias="es-MX")
-  fr_FR: Optional[str] = Field(None, alias="fr-FR")
-  id_ID: Optional[str] = Field(None, alias="id-ID")
-  it_IT: Optional[str] = Field(None, alias="it-IT")
-  ja_JP: Optional[str] = Field(None, alias="ja-JP")
-  ko_KR: Optional[str] = Field(None, alias="ko-KR")
-  pl_PL: Optional[str] = Field(None, alias="pl-PL")
-  pt_BR: Optional[str] = Field(None, alias="pt-BR")
-  ru_RU: Optional[str] = Field(None, alias="ru-RU")
-  th_TH: Optional[str] = Field(None, alias="th-TH")
-  tr_TR: Optional[str] = Field(None, alias="tr-TR")
-  vi_VN: Optional[str] = Field(None, alias="vi-VN")
-  zn_CN: Optional[str] = Field(None, alias="zn-CN")
-  zn_TW: Optional[str] = Field(None, alias="zn-TW")
+    ar_AE: str | None = Field(None, alias="ar-AE")
+    de_DE: str | None = Field(None, alias="de-DE")
+    en_GB: str | None = Field(None, alias="en-GB")
+    en_US: str | None = Field(None, alias="en-US")
+    es_ES: str | None = Field(None, alias="es-ES")
+    es_MX: str | None = Field(None, alias="es-MX")
+    fr_FR: str | None = Field(None, alias="fr-FR")
+    id_ID: str | None = Field(None, alias="id-ID")
+    it_IT: str | None = Field(None, alias="it-IT")
+    ja_JP: str | None = Field(None, alias="ja-JP")
+    ko_KR: str | None = Field(None, alias="ko-KR")
+    pl_PL: str | None = Field(None, alias="pl-PL")
+    pt_BR: str | None = Field(None, alias="pt-BR")
+    ru_RU: str | None = Field(None, alias="ru-RU")
+    th_TH: str | None = Field(None, alias="th-TH")
+    tr_TR: str | None = Field(None, alias="tr-TR")
+    vi_VN: str | None = Field(None, alias="vi-VN")
+    zn_CN: str | None = Field(None, alias="zn-CN")
+    zn_TW: str | None = Field(None, alias="zn-TW")
 
 
 class ContentItem(BaseModel):
-  name: Optional[str] = None
-  localizedNames: Optional[List[LocalizedName]] = None
-  id: Optional[str] = None
-  assetName: Optional[str] = None
-  assetPath: Optional[str] = None
+    name: str | None = None
+    localizedNames: list[LocalizedName] | None = None
+    id: str | None = None
+    assetName: str | None = None
+    assetPath: str | None = None
 
 
 Content = List[ContentItem]
 
 
 class LeaderboardItem(BaseModel):
-  PlayerCardID: Optional[str] = Field(
-    None,
-    examples=["8edf22c5-4489-ab41-769a-07adb4c454d6"],
-  )
-  TitleID: Optional[str] = Field(
-    None, examples=["82de085a-4c2b-da95-a139-048e4ce83dae"])
-  IsBanned: Optional[bool] = Field(None, examples=[False])
-  IsAnonymized: Optional[bool] = Field(None, examples=[False])
-  puuid: Optional[str] = Field(
-    None, examples=["c3b5b276-a43d-53f2-a897-038bc60b6682"])
-  gameName: Optional[str] = Field(None, examples=["Liquid ScreaM"])
-  tagLine: Optional[str] = Field(None, examples=["1TAP"])
-  leaderboardRank: Optional[int] = Field(None, examples=[1])
-  rankedRating: Optional[int] = Field(None, examples=[1222])
-  numberOfWins: Optional[int] = Field(None, examples=[67])
-  competitiveTier: Optional[int] = Field(None, examples=[24])
+    PlayerCardID: str | None = Field(
+        None,
+        examples=["8edf22c5-4489-ab41-769a-07adb4c454d6"],
+    )
+    TitleID: str | None = Field(None, examples=["82de085a-4c2b-da95-a139-048e4ce83dae"])
+    IsBanned: bool | None = Field(None, examples=[False])
+    IsAnonymized: bool | None = Field(None, examples=[False])
+    puuid: str | None = Field(None, examples=["c3b5b276-a43d-53f2-a897-038bc60b6682"])
+    gameName: str | None = Field(None, examples=["Liquid ScreaM"])
+    tagLine: str | None = Field(None, examples=["1TAP"])
+    leaderboardRank: int | None = Field(None, examples=[1])
+    rankedRating: int | None = Field(None, examples=[1222])
+    numberOfWins: int | None = Field(None, examples=[67])
+    competitiveTier: int | None = Field(None, examples=[24])
 
 
 Leaderboard = List[LeaderboardItem]
 
 
 class Translation(BaseModel):
-  content: Optional[str] = Field(
-    None,
-    examples=[
-      "The platform is currently unavailable while we perform emergency maintenance."
-    ],
-  )
-  locale: Optional[str] = Field(None, examples=["en_US"])
+    content: str | None = Field(
+        None,
+        examples=[
+            "The platform is currently unavailable while we perform emergency maintenance."
+        ],
+    )
+    locale: str | None = Field(None, examples=["en_US"])
 
 
 class Update(BaseModel):
-  created_at: Optional[str] = Field(
-    None, examples=["2022-01-12T22:11:07.645499+00:00"])
-  updated_at: Optional[str] = Field(
-    None, examples=["2022-01-12T23:00:00.000000+00:00"])
-  publish: Optional[bool] = Field(None, examples=[True])
-  id: Optional[int] = Field(None, examples=[6658])
-  translations: Optional[List[Translation]] = None
-  publish_locations: Optional[List[str]] = None
-  author: Optional[str] = Field(None, examples=["Riot Games"])
+    created_at: str | None = Field(None, examples=["2022-01-12T22:11:07.645499+00:00"])
+    updated_at: str | None = Field(None, examples=["2022-01-12T23:00:00.000000+00:00"])
+    publish: bool | None = Field(None, examples=[True])
+    id: int | None = Field(None, examples=[6658])
+    translations: list[Translation] | None = None
+    publish_locations: list[str] | None = None
+    author: str | None = Field(None, examples=["Riot Games"])
 
 
 class Title(BaseModel):
-  content: Optional[str] = Field(
-    None, examples=["Emergency Maintenance In Progress"])
-  locale: Optional[str] = Field(None, examples=["en_US"])
+    content: str | None = Field(None, examples=["Emergency Maintenance In Progress"])
+    locale: str | None = Field(None, examples=["en_US"])
 
 
 class StatusItem(BaseModel):
-  created_at: Optional[str] = Field(
-    None, examples=["2022-01-12T22:11:07.530569+00:00"])
-  archive_at: Optional[str] = Field(
-    None, examples=["2022-01-13T10:00:00.000000+00:00"])
-  updates: Optional[List[Update]] = None
-  platforms: Optional[List[str]] = None
-  updated_at: Optional[str] = Field(
-    None, examples=["2022-01-12T23:00:00.000000+00:00"])
-  id: Optional[int] = Field(None, examples=[4175])
-  titles: Optional[List[Title]] = None
-  maintenance_status: Optional[str] = Field(None, examples=["in_progress"])
-  incident_severity: Optional[str] = Field(None, examples=["warning"])
+    created_at: str | None = Field(None, examples=["2022-01-12T22:11:07.530569+00:00"])
+    archive_at: str | None = Field(None, examples=["2022-01-13T10:00:00.000000+00:00"])
+    updates: list[Update] | None = None
+    platforms: list[str] | None = None
+    updated_at: str | None = Field(None, examples=["2022-01-12T23:00:00.000000+00:00"])
+    id: int | None = Field(None, examples=[4175])
+    titles: list[Title] | None = None
+    maintenance_status: str | None = Field(None, examples=["in_progress"])
+    incident_severity: str | None = Field(None, examples=["warning"])
 
 
 Status = List[StatusItem]
 
 
 class Images(BaseModel):
-  small: Optional[str] = None
-  large: Optional[str] = None
-  triangle_down: Optional[str] = None
-  triangle_up: Optional[str] = None
+    small: str | None = None
+    large: str | None = None
+    triangle_down: str | None = None
+    triangle_up: str | None = None
 
 
 class Data(BaseModel):
-  currenttier: Optional[int] = Field(None, examples=[12])
-  currenttier_patched: Optional[str] = Field(None, examples=["Gold 1"])
-  images: Optional[Images] = None
-  ranking_in_tier: Optional[int] = Field(None, examples=[20])
-  mmr_change_to_last_game: Optional[int] = Field(None, examples=[-16])
-  elo: Optional[int] = Field(None, examples=[920])
-  name: Optional[str] = Field(None, examples=["Henrik3"])
-  tag: Optional[str] = Field(None, examples=["EUW3"])
-  old: Optional[bool] = Field(None, examples=[True])
+    currenttier: int | None = Field(None, examples=[12])
+    currenttier_patched: str | None = Field(None, examples=["Gold 1"])
+    images: Images | None = None
+    ranking_in_tier: int | None = Field(None, examples=[20])
+    mmr_change_to_last_game: int | None = Field(None, examples=[-16])
+    elo: int | None = Field(None, examples=[920])
+    name: str | None = Field(None, examples=["Henrik3"])
+    tag: str | None = Field(None, examples=["EUW3"])
+    old: bool | None = Field(None, examples=[True])
 
 
 class V1mmr(BaseModel):
-  status: Optional[int] = Field(None, examples=[200])
-  data: Optional[Data] = None
+    status: int | None = Field(None, examples=[200])
+    data: Data | None = None
 
 
 class CurrentData(BaseModel):
-  currenttier: Optional[int] = Field(None, examples=[12])
-  currenttierpatched: Optional[str] = Field(None, examples=["Gold 1"])
-  images: Optional[Images] = None
-  ranking_in_tier: Optional[int] = Field(None, examples=[20])
-  mmr_change_to_last_game: Optional[int] = Field(None, examples=[-16])
-  elo: Optional[int] = Field(None, examples=[920])
-  old: Optional[bool] = Field(None, examples=[True])
+    currenttier: int | None = Field(None, examples=[12])
+    currenttierpatched: str | None = Field(None, examples=["Gold 1"])
+    images: Images | None = None
+    ranking_in_tier: int | None = Field(None, examples=[20])
+    mmr_change_to_last_game: int | None = Field(None, examples=[-16])
+    elo: int | None = Field(None, examples=[920])
+    old: bool | None = Field(None, examples=[True])
 
 
 class HighestRank(BaseModel):
-  old: Optional[bool] = Field(None, examples=[False])
-  tier: Optional[int] = Field(None, examples=[19])
-  patched_tier: Optional[str] = Field(None, examples=["Diamond 2"])
-  season: Optional[str] = Field(None, examples=["e5a3"])
+    old: bool | None = Field(None, examples=[False])
+    tier: int | None = Field(None, examples=[19])
+    patched_tier: str | None = Field(None, examples=["Diamond 2"])
+    season: str | None = Field(None, examples=["e5a3"])
 
 
 class BySeason1(BaseModel):
-  e6a3: Optional[BySeason] = None
-  e6a2: Optional[BySeason] = None
-  e6a1: Optional[BySeason] = None
-  e5a3: Optional[BySeason] = None
-  e5a2: Optional[BySeason] = None
-  e5a1: Optional[BySeason] = None
-  e4a3: Optional[BySeason] = None
-  e4a2: Optional[BySeason] = None
-  e4a1: Optional[BySeason] = None
-  e3a3: Optional[BySeason] = None
-  e3a2: Optional[BySeason] = None
-  e3a1: Optional[BySeason] = None
-  e2a3: Optional[BySeason] = None
-  e2a2: Optional[BySeason] = None
-  e2a1: Optional[BySeason] = None
-  e1a3: Optional[BySeason] = None
-  e1a2: Optional[BySeason] = None
-  e1a1: Optional[BySeason] = None
+    e6a3: BySeason | None = None
+    e6a2: BySeason | None = None
+    e6a1: BySeason | None = None
+    e5a3: BySeason | None = None
+    e5a2: BySeason | None = None
+    e5a1: BySeason | None = None
+    e4a3: BySeason | None = None
+    e4a2: BySeason | None = None
+    e4a1: BySeason | None = None
+    e3a3: BySeason | None = None
+    e3a2: BySeason | None = None
+    e3a1: BySeason | None = None
+    e2a3: BySeason | None = None
+    e2a2: BySeason | None = None
+    e2a1: BySeason | None = None
+    e1a3: BySeason | None = None
+    e1a2: BySeason | None = None
+    e1a1: BySeason | None = None
 
 
 class Data1(BaseModel):
-  name: Optional[str] = Field(None, examples=["Henrik3"])
-  tag: Optional[str] = Field(None, examples=["EUW3"])
-  current_data: Optional[CurrentData] = None
-  highest_rank: Optional[HighestRank] = None
-  by_season: Optional[BySeason1] = None
+    name: str | None = Field(None, examples=["Henrik3"])
+    tag: str | None = Field(None, examples=["EUW3"])
+    current_data: CurrentData | None = None
+    highest_rank: HighestRank | None = None
+    by_season: BySeason1 | None = None
 
 
 class V2mmr(BaseModel):
-  status: Optional[int] = Field(None, examples=[200])
-  data: Optional[Data1] = None
+    status: int | None = Field(None, examples=[200])
+    data: Data1 | None = None
 
 
 class Map(BaseModel):
-  name: Optional[str] = Field(None, examples=["Icebox"])
-  id: Optional[str] = Field(None,
-                            examples=["e2ad5c54-4114-a870-9641-8ea21279579a"])
+    name: str | None = Field(None, examples=["Icebox"])
+    id: str | None = Field(None, examples=["e2ad5c54-4114-a870-9641-8ea21279579a"])
 
 
 class Datum(BaseModel):
-  currenttier: Optional[int] = Field(None, examples=[12])
-  currenttier_patched: Optional[str] = Field(None, examples=["Gold 1"])
-  images: Optional[Images] = None
-  match_id: Optional[str] = Field(
-    None,
-    examples=["e5a3301c-c8e5-43bc-be94-a5c0d5275fd4"],
-  )
-  map: Optional[Map] = None
-  season_id: Optional[str] = Field(
-    None,
-    examples=["34093c29-4306-43de-452f-3f944bde22be"],
-  )
-  ranking_in_tier: Optional[int] = Field(None, examples=[20])
-  mmr_change_to_last_game: Optional[int] = Field(None, examples=[-16])
-  elo: Optional[int] = Field(None, examples=[920])
-  date: Optional[str] = Field(None,
-                              examples=["Tuesday, January 11, 2022 9:52 PM"])
-  date_raw: Optional[int] = Field(None, examples=[1641934366])
+    currenttier: int | None = Field(None, examples=[12])
+    currenttier_patched: str | None = Field(None, examples=["Gold 1"])
+    images: Images | None = None
+    match_id: str | None = Field(
+        None,
+        examples=["e5a3301c-c8e5-43bc-be94-a5c0d5275fd4"],
+    )
+    map: Map | None = None
+    season_id: str | None = Field(
+        None,
+        examples=["34093c29-4306-43de-452f-3f944bde22be"],
+    )
+    ranking_in_tier: int | None = Field(None, examples=[20])
+    mmr_change_to_last_game: int | None = Field(None, examples=[-16])
+    elo: int | None = Field(None, examples=[920])
+    date: str | None = Field(None, examples=["Tuesday, January 11, 2022 9:52 PM"])
+    date_raw: int | None = Field(None, examples=[1641934366])
 
 
 class V1mmrh(BaseModel):
-  status: Optional[int] = Field(None, examples=[200])
-  name: Optional[str] = Field(None, examples=["Henrik3"])
-  tag: Optional[str] = Field(None, examples=["EUW3"])
-  data: Optional[List[Datum]] = None
+    status: int | None = Field(None, examples=[200])
+    name: str | None = Field(None, examples=["Henrik3"])
+    tag: str | None = Field(None, examples=["EUW3"])
+    data: list[Datum] | None = None
 
 
 class V3matches(BaseModel):
-  status: Optional[str] = Field(None, examples=[200])
-  data: Optional[List[Match]] = None
+    status: str | None = Field(None, examples=[200])
+    data: list[Match] | None = None
 
 
 V1leaderboard = Leaderboard
 
 
 class V2leaderboard(BaseModel):
-  last_update: Optional[int] = Field(None, examples=[1641219805])
-  next_update: Optional[int] = Field(None, examples=[1641222865])
-  total_players: Optional[int] = Field(None, examples=[37463])
-  radiant_threshold: Optional[int] = Field(None, examples=[550])
-  immortal_3_threshold: Optional[int] = Field(None, examples=[200])
-  immortal_2_threshold: Optional[int] = Field(None, examples=[100])
-  immortal_1_threshold: Optional[int] = Field(None, examples=[0])
-  players: Optional[Leaderboard] = None
+    last_update: int | None = Field(None, examples=[1641219805])
+    next_update: int | None = Field(None, examples=[1641222865])
+    total_players: int | None = Field(None, examples=[37463])
+    radiant_threshold: int | None = Field(None, examples=[550])
+    immortal_3_threshold: int | None = Field(None, examples=[200])
+    immortal_2_threshold: int | None = Field(None, examples=[100])
+    immortal_1_threshold: int | None = Field(None, examples=[0])
+    players: Leaderboard | None = None
 
 
 class Item1(BaseModel):
-  ItemTypeID: Optional[str] = None
-  ItemID: Optional[str] = None
-  Amount: Optional[str] = None
+    ItemTypeID: str | None = None
+    ItemID: str | None = None
+    Amount: str | None = None
 
 
 class Item(BaseModel):
-  Item: Optional[Item1] = None
-  BasePrice: Optional[int] = None
-  CurrencyID: Optional[str] = None
-  DiscountPercent: Optional[float] = None
-  DiscountedPrice: Optional[int] = None
-  IsPromoItem: Optional[bool] = None
+    Item: Item1 | None = None
+    BasePrice: int | None = None
+    CurrencyID: str | None = None
+    DiscountPercent: float | None = None
+    DiscountedPrice: int | None = None
+    IsPromoItem: bool | None = None
 
 
 class BundleRaw(BaseModel):
-  ID: Optional[str] = None
-  DataAssetID: Optional[str] = None
-  CurrencyID: Optional[str] = None
-  Items: Optional[List[Item]] = None
-  DurationRemainingInSeconds: Optional[int] = None
-  Wholesaleonly: Optional[bool] = None
+    ID: str | None = None
+    DataAssetID: str | None = None
+    CurrencyID: str | None = None
+    Items: list[Item] | None = None
+    DurationRemainingInSeconds: int | None = None
+    Wholesaleonly: bool | None = None
 
 
 class Item2(BaseModel):
-  uuid: Optional[str] = None
-  name: Optional[str] = None
-  image: Optional[str] = None
-  type: Optional[str] = None
-  amount: Optional[int] = None
-  discount_percent: Optional[float] = None
-  base_price: Optional[int] = None
-  discounted_price: Optional[int] = None
-  promo_item: Optional[bool] = None
+    uuid: str | None = None
+    name: str | None = None
+    image: str | None = None
+    type: str | None = None
+    amount: int | None = None
+    discount_percent: float | None = None
+    base_price: int | None = None
+    discounted_price: int | None = None
+    promo_item: bool | None = None
 
 
 class BundleParsed(BaseModel):
-  bundle_uuid: Optional[str] = None
-  seconds_remaining: Optional[int] = None
-  bundle_price: Optional[float] = None
-  whole_sale_only: Optional[bool] = None
-  expires_at: Optional[str] = None
-  items: Optional[List[Item2]] = None
+    bundle_uuid: str | None = None
+    seconds_remaining: int | None = None
+    bundle_price: float | None = None
+    whole_sale_only: bool | None = None
+    expires_at: str | None = None
+    items: list[Item2] | None = None
 
 
-class FeaturedBundle(BaseModel):
-  Bundle: Optional[BundleRaw] = None
-  Bundles: Optional[List[BundleRaw]] = None
-  BundleRemainingDurationInSeconds: Optional[int] = None
+class FeaturedBundleType(BaseModel):
+    Bundle: BundleRaw | None = None
+    Bundles: list[BundleRaw] | None = None
+    BundleRemainingDurationInSeconds: int | None = None
 
 
 class Data2(BaseModel):
-  FeaturedBundle: Optional[FeaturedBundle] = None
+    FeaturedBundle: FeaturedBundleType | None = None
 
 
 class V1storefeatured(BaseModel):
-  status: Optional[int] = None
-  data: Optional[Data2] = None
+    status: int | None = None
+    data: Data2 | None = None
 
 
 class V2storefeatured(BaseModel):
-  status: Optional[int] = None
-  data: Optional[List[BundleParsed]] = None
+    status: int | None = None
+    data: list[BundleParsed] | None = None
 
 
 class Type(Enum):
-  skin_level = "skin_level"
-  skin_chroma = "skin_chroma"
-  buddy = "buddy"
-  spray = "spray"
-  player_card = "player_card"
-  player_title = "player_title"
+    skin_level = "skin_level"
+    skin_chroma = "skin_chroma"
+    buddy = "buddy"
+    spray = "spray"
+    player_card = "player_card"
+    player_title = "player_title"
 
 
 class ContentTier(BaseModel):
-  name: Optional[str] = Field(None, examples=["Deluxe Edition"])
-  dev_name: Optional[str] = Field(None, examples=["Exclusive"])
-  icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/contenttiers/e046854e-406c-37f4-6607-19a9ba8426fc/displayicon.png"
-    ],
-  )
+    name: str | None = Field(None, examples=["Deluxe Edition"])
+    dev_name: str | None = Field(None, examples=["Exclusive"])
+    icon: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/contenttiers/e046854e-406c-37f4-6607-19a9ba8426fc/displayicon.png"
+        ],
+    )
 
 
 class V2storeoffer(BaseModel):
-  offer_id: Optional[str] = Field(
-    None,
-    examples=["a3dba920-44ee-d7c5-5227-99a80aee3bd9"],
-  )
-  cost: Optional[int] = Field(None, examples=[2175])
-  name: Optional[str] = Field(None, examples=["Araxys Vandal"])
-  icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://media.valorant-api.com/weaponskinlevels/a3dba920-44ee-d7c5-5227-99a80aee3bd9/displayicon.png"
-    ],
-  )
-  type: Optional[Type] = None
-  skin_id: Optional[str] = Field(
-    None, examples=["4c926aa9-4f26-bc80-c486-9b888333373f"])
-  content_tier: Optional[ContentTier] = None
+    offer_id: str | None = Field(
+        None,
+        examples=["a3dba920-44ee-d7c5-5227-99a80aee3bd9"],
+    )
+    cost: int | None = Field(None, examples=[2175])
+    name: str | None = Field(None, examples=["Araxys Vandal"])
+    icon: str | None = Field(
+        None,
+        examples=[
+            "https://media.valorant-api.com/weaponskinlevels/a3dba920-44ee-d7c5-5227-99a80aee3bd9/displayicon.png"
+        ],
+    )
+    type: Type | None = None
+    skin_id: str | None = Field(None, examples=["4c926aa9-4f26-bc80-c486-9b888333373f"])
+    content_tier: ContentTier | None = None
 
 
 class Data3(BaseModel):
-  offers: Optional[List[V2storeoffer]] = None
+    offers: list[V2storeoffer] | None = None
 
 
 class V2storeoffers(BaseModel):
-  status: Optional[int] = None
-  data: Optional[Data3] = None
+    status: int | None = None
+    data: Data3 | None = None
 
 
 class League(BaseModel):
-  name: Optional[str] = Field(None, examples=["Challengers DACH"])
-  identifier: Optional[str] = Field(None, examples=["vrl_dach"])
-  icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://static.lolesports.com/leagues/1672932144616_DACH_ICON_400_400.png"
-    ],
-  )
-  region: Optional[str] = Field(None, examples=["EMEA"])
+    name: str | None = Field(None, examples=["Challengers DACH"])
+    identifier: str | None = Field(None, examples=["vrl_dach"])
+    icon: str | None = Field(
+        None,
+        examples=[
+            "https://static.lolesports.com/leagues/1672932144616_DACH_ICON_400_400.png"
+        ],
+    )
+    region: str | None = Field(None, examples=["EMEA"])
 
 
 class Tournament(BaseModel):
-  name: Optional[str] = Field(None,
-                              examples=["challengers_emea_leagues_split_1"])
-  season: Optional[str] = Field(None, examples=["2023"])
+    name: str | None = Field(None, examples=["challengers_emea_leagues_split_1"])
+    season: str | None = Field(None, examples=["2023"])
 
 
 class Type1(Enum):
-  playAll = "playAll"
-  bestOf = "bestOf"
+    playAll = "playAll"
+    bestOf = "bestOf"
 
 
 class GameType(BaseModel):
-  type: Optional[Type1] = None
-  count: Optional[int] = Field(None, examples=[2])
+    type: Type1 | None = None
+    count: int | None = Field(None, examples=[2])
 
 
 class Record(BaseModel):
-  wins: Optional[int] = Field(None, examples=[0])
-  losses: Optional[int] = Field(None, examples=[1])
+    wins: int | None = Field(None, examples=[0])
+    losses: int | None = Field(None, examples=[1])
 
 
 class Team1(BaseModel):
-  name: Optional[str] = Field(None, examples=["Angry Titans"])
-  code: Optional[str] = Field(None, examples=["AT"])
-  icon: Optional[str] = Field(
-    None,
-    examples=[
-      "https://static.lolesports.com/teams/1644488801867_AT_red_icon2x.png"
-    ],
-  )
-  has_won: Optional[bool] = Field(None, examples=[False])
-  game_wins: Optional[int] = Field(None, examples=[0])
-  record: Optional[Record] = None
+    name: str | None = Field(None, examples=["Angry Titans"])
+    code: str | None = Field(None, examples=["AT"])
+    icon: str | None = Field(
+        None,
+        examples=[
+            "https://static.lolesports.com/teams/1644488801867_AT_red_icon2x.png"
+        ],
+    )
+    has_won: bool | None = Field(None, examples=[False])
+    game_wins: int | None = Field(None, examples=[0])
+    record: Record | None = None
 
 
 class Match1(BaseModel):
-  id: Optional[str] = Field(None, examples=["109625073196211557"])
-  game_type: Optional[GameType] = None
-  teams: Optional[List[Team1]] = None
+    id: str | None = Field(None, examples=["109625073196211557"])
+    game_type: GameType | None = None
+    teams: list[Team1] | None = None
 
 
 class V1esportscheduleitem(BaseModel):
-  date: Optional[str] = Field(None, examples=["2023-01-17T20:00:00Z"])
-  state: Optional[str] = Field(None, examples=["completed"])
-  type: Optional[str] = Field(None, examples=["match"])
-  vod: Optional[str] = Field(None, examples=["https://youtu.be/PrQ-LBZ4W-E"])
-  league: Optional[League] = None
-  tournament: Optional[Tournament] = None
-  match: Optional[Match1] = None
+    date: str | None = Field(None, examples=["2023-01-17T20:00:00Z"])
+    state: str | None = Field(None, examples=["completed"])
+    type: str | None = Field(None, examples=["match"])
+    vod: str | None = Field(None, examples=["https://youtu.be/PrQ-LBZ4W-E"])
+    league: League | None = None
+    tournament: Tournament | None = None
+    match: Match1 | None = None
 
 
 class V1esportschedule(BaseModel):
-  status: Optional[int] = None
-  data: Optional[List[V1esportscheduleitem]] = None
+    status: int | None = None
+    data: list[V1esportscheduleitem] | None = None
 
 
 class Map1(BaseModel):
-  id: Optional[str] = None
-  name: Optional[str] = None
+    id: str
+    name: str
 
 
 class Season(BaseModel):
-  id: Optional[str] = None
-  short: Optional[str] = None
+    id: str
+    short: str
 
 
 class Meta(BaseModel):
-  id: Optional[str] = None
-  map: Optional[Map1] = None
-  version: Optional[str] = None
-  mode: Optional[str] = None
-  started_at: Optional[str] = None
-  season: Optional[Season] = None
-  region: Optional[str] = None
-  cluster: Optional[str] = None
+    id: str | None = None
+    map: Map1 | None = None
+    version: str | None = None
+    mode: str | None = None
+    started_at: str | None = None
+    season: Season | None = None
+    region: str | None = None
+    cluster: str | None = None
 
 
 class Character(Map1):
-  pass
+    pass
 
 
 class Shots(BaseModel):
-  head: Optional[float] = None
-  body: Optional[float] = None
-  leg: Optional[float] = None
+    head: float | None = None
+    body: float | None = None
+    leg: float | None = None
 
 
 class Damage(BaseModel):
-  made: Optional[float] = None
-  received: Optional[float] = None
+    made: float
+    received: float
 
 
 class Stats1(BaseModel):
-  puuid: Optional[str] = None
-  team: Optional[str] = None
-  level: Optional[float] = None
-  character: Optional[Character] = None
-  tier: Optional[float] = None
-  score: Optional[float] = None
-  kills: Optional[float] = None
-  deaths: Optional[float] = None
-  assists: Optional[float] = None
-  shots: Optional[Shots] = None
-  damage: Optional[Damage] = None
+    puuid: str
+    team: str
+    level: float
+    character: Character
+    tier: float
+    score: float
+    kills: float
+    deaths: float
+    assists: float
+    shots: Shots
+    damage: Damage
 
 
 class Teams1(BaseModel):
-  red: Optional[float] = None
-  blue: Optional[float] = None
+    red: float
+    blue: float
 
 
 class V1LifetimeMatchesItem(BaseModel):
-  meta: Optional[Meta] = None
-  stats: Optional[Stats1] = None
-  teams: Optional[Teams1] = None
+    meta: Meta
+    stats: Stats1
+    teams: Teams1
 
 
 class Results(BaseModel):
-  total: Optional[float] = None
-  returned: Optional[float] = None
-  before: Optional[float] = None
-  after: Optional[float] = None
+    total: float | None = None
+    returned: float | None = None
+    before: float | None = None
+    after: float | None = None
 
 
 class V1LifetimeMatches(BaseModel):
-  status: Optional[int] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
-  results: Optional[Results] = None
-  data: Optional[List[V1LifetimeMatchesItem]] = None
+    status: int | None = None
+    name: str | None = None
+    tag: str | None = None
+    results: Results | None = None
+    data: list[V1LifetimeMatchesItem] | None = None
 
 
 class Stats2(BaseModel):
-  wins: Optional[float] = None
-  matches: Optional[float] = None
-  losses: Optional[float] = None
+    wins: float | None = None
+    matches: float | None = None
+    losses: float | None = None
 
 
 class Placement(BaseModel):
-  points: Optional[float] = None
-  conference: Optional[str] = None
-  division: Optional[float] = None
-  place: Optional[float] = None
+    points: float | None = None
+    conference: str | None = None
+    division: float | None = None
+    place: float | None = None
 
 
 class MemberItem(BaseModel):
-  puuid: Optional[str] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
+    puuid: str | None = None
+    name: str | None = None
+    tag: str | None = None
 
 
 class Data4(BaseModel):
-  id: Optional[UUID] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
-  enrolled: Optional[bool] = None
-  stats: Optional[Stats2] = None
-  placement: Optional[Placement] = None
-  customization: Optional[Customization] = None
-  member: Optional[List[MemberItem]] = None
+    id: UUID | None = None
+    name: str | None = None
+    tag: str | None = None
+    enrolled: bool | None = None
+    stats: Stats2 | None = None
+    placement: Placement | None = None
+    customization: Customization | None = None
+    member: list[MemberItem] | None = None
 
 
 class V1PremierTeam(BaseModel):
-  status: Optional[int] = None
-  data: Optional[Data4] = None
+    status: int | None = None
+    data: Data4 | None = None
 
 
 class LeagueMatch(BaseModel):
-  id: Optional[UUID] = None
-  points_before: Optional[float] = None
-  points_after: Optional[float] = None
-  started_at: Optional[datetime] = None
+    id: UUID | None = None
+    points_before: float | None = None
+    points_after: float | None = None
+    started_at: datetime | None = None
 
 
 class Data5(BaseModel):
-  league_matches: Optional[List[LeagueMatch]] = None
+    league_matches: list[LeagueMatch] | None = None
 
 
 class V1PremierTeamHistory(BaseModel):
-  status: Optional[float] = None
-  data: Optional[Data5] = None
+    status: float | None = None
+    data: Data5 | None = None
 
 
 class V1PartialPremierTeam(BaseModel):
-  id: Optional[UUID] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
-  conference: Optional[PremierConferences] = None
-  division: Optional[float] = None
-  affinity: Optional[Affinities] = None
-  region: Optional[Regions] = None
-  losses: Optional[float] = None
-  wins: Optional[float] = None
-  score: Optional[float] = None
-  ranking: Optional[float] = None
-  customization: Optional[Customization] = None
+    id: UUID | None = None
+    name: str | None = None
+    tag: str | None = None
+    conference: PremierConferences | None = None
+    division: float | None = None
+    affinity: Affinities | None = None
+    region: Regions | None = None
+    losses: float | None = None
+    wins: float | None = None
+    score: float | None = None
+    ranking: float | None = None
+    customization: Customization | None = None
 
 
 class V1PremierSearch(BaseModel):
-  status: Optional[float] = None
-  data: Optional[List[V1PartialPremierTeam]] = None
+    status: float | None = None
+    data: list[V1PartialPremierTeam] | None = None
 
 
 class V1PremierLeaderboard(V1PremierSearch):
-  pass
+    pass
 
 
 class Pod(BaseModel):
-  pod: Optional[str] = None
-  name: Optional[str] = None
+    pod: str | None = None
+    name: str | None = None
 
 
 class Datum1(BaseModel):
-  id: Optional[UUID] = None
-  affinity: Optional[Affinities] = None
-  pods: Optional[List[Pod]] = None
-  region: Optional[Regions] = None
-  timezone: Optional[str] = None
-  name: Optional[PremierConferences] = None
-  icon: Optional[str] = None
+    id: UUID | None = None
+    affinity: Affinities | None = None
+    pods: list[Pod] | None = None
+    region: Regions | None = None
+    timezone: str | None = None
+    name: PremierConferences | None = None
+    icon: str | None = None
 
 
 class V1PremierConference(BaseModel):
-  status: Optional[float] = None
-  data: Optional[List[Datum1]] = None
+    status: float | None = None
+    data: list[Datum1] | None = None
 
 
 class ConferenceSchedule(BaseModel):
-  conference: Optional[PremierConferences] = None
-  starts_at: Optional[datetime] = None
-  ends_at: Optional[datetime] = None
+    conference: PremierConferences | None = None
+    starts_at: datetime | None = None
+    ends_at: datetime | None = None
 
 
 class Map2(BaseModel):
-  name: Optional[Maps] = None
-  id: Optional[UUID] = None
+    name: Maps | None = None
+    id: UUID | None = None
 
 
 class MapSelection(BaseModel):
-  type: Optional[PremierSeasonsEventMapSelectionTypes] = None
-  maps: Optional[List[Map2]] = None
+    type: PremierSeasonsEventMapSelectionTypes | None = None
+    maps: list[Map2] | None = None
 
 
 class Event(BaseModel):
-  id: Optional[UUID] = None
-  type: Optional[PremierSeasonsEventTypes] = None
-  starts_at: Optional[datetime] = None
-  ends_at: Optional[datetime] = None
-  conference_schedules: Optional[List[ConferenceSchedule]] = None
-  map_selection: Optional[MapSelection] = None
-  points_required_to_participate: Optional[float] = None
+    id: UUID | None = None
+    type: PremierSeasonsEventTypes | None = None
+    starts_at: datetime | None = None
+    ends_at: datetime | None = None
+    conference_schedules: list[ConferenceSchedule] | None = None
+    map_selection: MapSelection | None = None
+    points_required_to_participate: float | None = None
 
 
 class Datum2(BaseModel):
-  id: Optional[UUID] = None
-  championship_event_id: Optional[UUID] = None
-  championship_points_required: Optional[float] = None
-  starts_at: Optional[datetime] = None
-  ends_at: Optional[datetime] = None
-  enrollment_starts_at: Optional[datetime] = None
-  enrollment_ends_at: Optional[datetime] = None
-  events: Optional[List[Event]] = None
+    id: UUID | None = None
+    championship_event_id: UUID | None = None
+    championship_points_required: float | None = None
+    starts_at: datetime | None = None
+    ends_at: datetime | None = None
+    enrollment_starts_at: datetime | None = None
+    enrollment_ends_at: datetime | None = None
+    events: list[Event] | None = None
 
 
 class V1PremierSeason(BaseModel):
-  status: Optional[float] = None
-  data: Optional[List[Datum2]] = None
+    status: float | None = None
+    data: list[Datum2] | None = None
 
 
 class PartySize(BaseModel):
-  max: Optional[float] = None
-  min: Optional[float] = None
-  invalid: Optional[List[float]] = None
-  full_party_bypass: Optional[bool] = None
+    max: float | None = None
+    min: float | None = None
+    invalid: list[float] | None = None
+    full_party_bypass: bool | None = None
 
 
 class HighSkill(BaseModel):
-  max_party_size: Optional[float] = None
-  min_tier: Optional[float] = None
-  max_tier: Optional[float] = None
+    max_party_size: float | None = None
+    min_tier: float | None = None
+    max_tier: float | None = None
 
 
 class MaxTier(BaseModel):
-  id: Optional[float] = None
-  name: Optional[Tiers] = None
+    id: float | None = None
+    name: Tiers | None = None
 
 
 class SkillDisparityItem(BaseModel):
-  tier: Optional[float] = None
-  name: Optional[Tiers] = None
-  max_tier: Optional[MaxTier] = None
+    tier: float | None = None
+    name: Tiers | None = None
+    max_tier: MaxTier | None = None
 
 
 class GameRules(BaseModel):
-  overtime_win_by_two: Optional[bool] = None
-  allow_lenient_surrender: Optional[bool] = None
-  allow_drop_out: Optional[bool] = None
-  assign_random_agents: Optional[bool] = None
-  skip_pregame: Optional[bool] = None
-  allow_overtime_draw_vote: Optional[bool] = None
-  overtime_win_by_two_capped: Optional[bool] = None
-  premier_mode: Optional[bool] = None
+    overtime_win_by_two: bool | None = None
+    allow_lenient_surrender: bool | None = None
+    allow_drop_out: bool | None = None
+    assign_random_agents: bool | None = None
+    skip_pregame: bool | None = None
+    allow_overtime_draw_vote: bool | None = None
+    overtime_win_by_two_capped: bool | None = None
+    premier_mode: bool | None = None
 
 
 class Map4(BaseModel):
-  id: Optional[UUID] = None
-  name: Optional[Maps] = None
+    id: UUID | None = None
+    name: Maps | None = None
 
 
 class Map3(BaseModel):
-  map: Optional[Map4] = None
-  enabled: Optional[bool] = None
+    map: Map4 | None = None
+    enabled: bool | None = None
 
 
 class Datum3(BaseModel):
-  mode: Optional[Modes] = None
-  mode_id: Optional[ModeIds] = None
-  enabled: Optional[bool] = None
-  team_size: Optional[float] = None
-  number_of_teams: Optional[float] = None
-  party_size: Optional[PartySize] = None
-  high_skill: Optional[HighSkill] = None
-  ranked: Optional[bool] = None
-  tournament: Optional[bool] = None
-  skill_disparity: Optional[List[SkillDisparityItem]] = None
-  required_account_level: Optional[float] = None
-  game_rules: Optional[GameRules] = None
-  platforms: Optional[List[Platforms]] = None
-  maps: Optional[List[Map3]] = None
+    mode: Modes | None = None
+    mode_id: ModeIds | None = None
+    enabled: bool | None = None
+    team_size: float | None = None
+    number_of_teams: float | None = None
+    party_size: PartySize | None = None
+    high_skill: HighSkill | None = None
+    ranked: bool | None = None
+    tournament: bool | None = None
+    skill_disparity: list[SkillDisparityItem] | None = None
+    required_account_level: float | None = None
+    game_rules: GameRules | None = None
+    platforms: list[Platforms] | None = None
+    maps: list[Map3] | None = None
 
 
 class V1QueueStatus(BaseModel):
-  status: Optional[float] = None
-  data: Optional[List[Datum3]] = None
+    status: float | None = None
+    data: list[Datum3] | None = None
 
 
 class Tier(MaxTier):
-  pass
+    pass
 
 
 class Map5(Map4):
-  pass
+    pass
 
 
 class Season1(BaseModel):
-  id: Optional[UUID] = None
-  short: Optional[Seasons] = None
+    id: UUID | None = None
+    short: Seasons | None = None
 
 
 class V1LifetimeMmrHistoryItem(BaseModel):
-  match_id: Optional[UUID] = None
-  tier: Optional[Tier] = None
-  map: Optional[Map5] = None
-  season: Optional[Season1] = None
-  ranking_in_tier: Optional[float] = None
-  last_mmr_change: Optional[float] = None
-  elo: Optional[float] = None
-  date: Optional[datetime] = None
+    match_id: UUID | None = None
+    tier: Tier | None = None
+    map: Map5 | None = None
+    season: Season1 | None = None
+    ranking_in_tier: float | None = None
+    last_mmr_change: float | None = None
+    elo: float | None = None
+    date: datetime | None = None
 
 
 class V1LifetimeMmrHistory(BaseModel):
-  status: Optional[int] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
-  results: Optional[Results] = None
-  data: Optional[List[V1LifetimeMmrHistoryItem]] = None
+    status: int | None = None
+    name: str | None = None
+    tag: str | None = None
+    results: Results | None = None
+    data: list[V1LifetimeMmrHistoryItem] | None = None
 
 
 class Card1(BaseModel):
-  small: Optional[str] = None
-  large: Optional[str] = None
-  wide: Optional[str] = None
-  id: Optional[str] = None
+    small: str | None = None
+    large: str | None = None
+    wide: str | None = None
+    id: str | None = None
 
 
 class Data6(BaseModel):
-  puuid: Optional[str] = None
-  region: Optional[str] = None
-  account_level: Optional[int] = None
-  name: Optional[str] = None
-  tag: Optional[str] = None
-  card: Optional[Card1] = None
-  last_update: Optional[str] = None
-  last_update_raw: Optional[int] = None
+    puuid: str | None = None
+    region: str | None = None
+    account_level: int | None = None
+    name: str | None = None
+    tag: str | None = None
+    card: Card1 | None = None
+    last_update: str | None = None
+    last_update_raw: int | None = None
 
 
 class V1Account(BaseModel):
-  status: Optional[int] = None
-  data: Optional[Data6] = None
+    status: int | None = None
+    data: Data6 | None = None
