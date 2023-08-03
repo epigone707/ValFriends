@@ -1,4 +1,15 @@
+from enum import Enum
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class RegionEnum(str, Enum):
+    eu = "eu"
+    na = "na"
+    latam = "latam"
+    br = "br"
+    ap = "ap"
+    kr = "kr"
 
 
 class Settings(BaseSettings):
@@ -9,6 +20,8 @@ class Settings(BaseSettings):
     expire_time: int = 60 * 60
     log_filename: str = "val-friend.log"
     test_server_id: int = 0
+    is_repl_it: bool = False
+    region: RegionEnum = RegionEnum.na
 
 
 settings = Settings()

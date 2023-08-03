@@ -1,5 +1,10 @@
 from typing import Any, Iterable
 
+import disnake
+
+from models.users.discord import DiscordBinds, dc_users
+from models.users.valorant import fullname2puuid, val_users
+
 
 def rank2num(rankStr: str) -> int:
     ranks = [
@@ -20,14 +25,14 @@ def rank2num(rankStr: str) -> int:
 
 
 def get_rank_order(
-    users: dict[str, Any], rank_key: str, limit: int
-) -> tuple[list[str], Iterable[str]]:
-    userList = list(users.keys())
-    userList.sort(
-        key=lambda x: rank2num(users[x].__getattribute__(rank_key)), reverse=True
+    val_users: dict[str, Any], rank_key: str, limit: int
+) -> tuple[Iterable[str], Iterable[str]]:
+    keys = list(val_users.keys())
+    keys.sort(
+        key=lambda x: rank2num(val_users[x].__getattribute__(rank_key)), reverse=True
     )
     if limit > 0:
-        userList = userList[:limit]
-    return userList, map(
-        lambda x: users[x].__getattribute__(rank_key) or "Unranked", userList
+        keys = keys[:limit]
+    return map(lambda x: val_users[x].fullname, keys), map(
+        lambda x: val_users[x].__getattribute__(rank_key) or "Unranked", keys
     )

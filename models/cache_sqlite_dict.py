@@ -7,13 +7,13 @@ from sqlitedict import SqliteDict
 class CacheSqliteDict(SqliteDict):
     def __init__(
         self,
-        on_expire: Callable[[Any], Any],
-        expire_time: int,
+        on_expire: Callable[[Any], Any] | None = None,
+        expire_time: int = 600,
         *args: Any,
         **kwargs: Any
     ) -> None:
         super().__init__(*args, **kwargs)
-        self.on_expire = on_expire
+        self.on_expire = super().__getitem__ if on_expire is None else on_expire
         self.expire_time = expire_time
         self.last_fetch_time: dict[Any, float] = {}
         self.cache_data: dict[Any, Any] = {}

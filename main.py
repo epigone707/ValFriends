@@ -3,7 +3,8 @@ from disnake.ext import commands
 
 import keep_alive
 from logger import logger
-from models.users import users
+from models.users.discord import DiscordBinds, dc_users
+from models.users.valorant import ValUser, fullname2puuid, val_users
 from settings import settings
 from utils import get_rank_order
 
@@ -22,7 +23,7 @@ features finished:
 - support help slash command. Need to show the info for each parameter when user clicks on it.
 - get user's recent matches stats like kda
 - autocomplete username
-- add rank icon to every rank shown in stats, allstats and crank. There is a icon url in the return json from API, just store it in the cache!
+- add rank icon to every rank shown in stats, all_stats and crank. There is a icon url in the return json from API, just store it in the cache!
 
 """
 
@@ -82,31 +83,24 @@ async def help(inter: disnake.ApplicationCommandInteraction, command: str = "") 
     await inter.response.send_message(embed=embed)
 
 
-@bot.slash_command(description="Get all users' stats.")
-async def allstats(inter: disnake.ApplicationCommandInteraction) -> None:
+@bot.slash_command(name="all_stats", description="Get all users' stats.")
+async def all_stats(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     Get all users' stats.
     """
     embed = disnake.Embed(
         title="Stats of All Registered Users", color=disnake.Color.blue()
     )
-    for user in sorted(users.keys(), key=lambda x: x.lower()):
-        profile = users[user]
-        val = f"Highest rank: {profile.hrank}\nCurrent rank: {profile.crank}\nElo: {profile.elo}"
-        embed.add_field(name=user, value=val, inline=True)
+    for key in sorted(val_users.keys(), key=lambda x: x.lower()):
+        val_user: ValUser = val_users[key]
+        val = f"Highest rank: {val_user.hrank}\nCurrent rank: {val_user.crank}\nElo: {val_user.elo}"
+        embed.add_field(name=val_user.fullname, value=val, inline=True)
     await inter.response.send_message(embed=embed)
-
-
-async def autocomp_username(
-    inter: disnake.ApplicationCommandInteraction, user_input: str
-) -> list[str]:
-    return [user for user in users if user_input.lower() in user.lower()]
 
 
 @bot.slash_command(name="stats")
 async def stats(
     inter: disnake.ApplicationCommandInteraction,
-    fullname: str = commands.Param(autocomplete=autocomp_username),
 ) -> None:
     """
     Get user's stats.
@@ -115,9 +109,8 @@ async def stats(
     ----------
     fullname: The fullname of the player, should be in the form: <username>#<tag>.
     """
-    res = users[fullname]
-    logger.info(fullname)
-    # logger.info(res)
+    res: ValUser = dc_users[inter.author.id].val_user
+    logger.info(res)
     embed = disnake.Embed(title=f"Stats of {res.fullname}", color=disnake.Color.blue())
     embed.add_field(name="Highest rank", value=res.hrank, inline=True)
     embed.add_field(name="Current rank", value=res.crank, inline=True)
@@ -141,75 +134,35 @@ async def stats(
 
 
 @bot.slash_command(name="expire")
-async def expire(
-    inter: disnake.ApplicationCommandInteraction,
-    fullname: str = commands.Param(autocomplete=autocomp_username),
-) -> None:
+async def expire(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     Force expire user's stats.
-
-    Parameters
-    ----------
-    fullname: The fullname of the player, should be in the form: <username>#<tag>.
     """
-    await inter.response.send_message("expire started")
-    users.expire(fullname)
+    await inter.response.defer()
+    val_users.expire(dc_users[inter.author.id].val_id)
+    await inter.edit_original_message("expire done")
 
 
-@bot.slash_command(name="allexpire")
-async def allexpire(inter: disnake.ApplicationCommandInteraction) -> None:
+@bot.slash_command(name="all_expire")
+async def all_val_expire(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     Force expire all user's stats.
     """
-    await inter.response.send_message("expire started")
-    for fullname in users.keys():
-        users.expire(fullname)
+    await inter.response.defer()
+    for key in val_users.keys():
+        val_users.expire(key)
+    await inter.edit_original_message("expire done")
 
 
-@bot.slash_command(name="delete")
+@bot.slash_command(name="all_delete")
 @commands.default_member_permissions(administrator=True)
-async def delete(
-    inter: disnake.ApplicationCommandInteraction,
-    fullname: str = commands.Param(autocomplete=autocomp_username),
-) -> None:
-    """
-    Delete a user from the user list of this server (admin only).
-
-    Parameters
-    ----------
-    fullname: The fullname of the player, should be in the form: <username>#<tag>.
-    """
-    users.pop(fullname)
-    await inter.response.send_message(
-        f"Successfully deleted {fullname} from user list!"
-    )
-
-
-@bot.slash_command(name="alldelete")
-@commands.default_member_permissions(administrator=True)
-async def alldelete(inter: disnake.ApplicationCommandInteraction) -> None:
+async def all_delete(inter: disnake.ApplicationCommandInteraction) -> None:
     """
     Delete all users from the user list of this server (admin only).
     """
-    for fullname in users.keys():
-        users.pop(fullname)
+    for fullname in val_users.keys():
+        val_users.pop(fullname)
     await inter.response.send_message("Successfully deleted all users from user list!")
-
-
-@bot.slash_command(name="userlist")
-async def userlist(inter: disnake.ApplicationCommandInteraction) -> None:
-    """
-    Print user list.
-    """
-    embed = disnake.Embed(
-        title="All Valorant Users Registered In This Server", color=disnake.Color.blue()
-    )
-    embed.add_field(
-        name="Users",
-        value="\n".join(sorted(users.keys(), key=lambda x: x.lower())),
-        inline=True,
-    )
-    await inter.response.send_message(embed=embed)
 
 
 @bot.slash_command(name="review")
@@ -247,7 +200,7 @@ async def crank(inter: disnake.ApplicationCommandInteraction, limit: int = 0) ->
     ----------
     limit: An integer value that represent how many users you want to print.
     """
-    userList, rankList = get_rank_order(users, "crank", limit)
+    userList, rankList = get_rank_order(val_users, "crank", limit)
     embed = disnake.Embed(title="Current Ranks", color=disnake.Color.blue())
     embed.add_field(name="Val User", value="\n".join(userList), inline=True)
     embed.add_field(name="Rank", value="\n".join(rankList), inline=True)
@@ -263,13 +216,31 @@ async def hrank(inter: disnake.ApplicationCommandInteraction, limit: int = 0) ->
     ----------
     limit: An integer value that represent how many users you want to print.
     """
-    userList, rankList = get_rank_order(users, "hrank", limit)
+    userList, rankList = get_rank_order(val_users, "hrank", limit)
     embed = disnake.Embed(title="Highest Ranks", color=disnake.Color.blue())
     embed.add_field(name="Val User", value="\n".join(userList), inline=True)
     embed.add_field(name="Rank", value="\n".join(rankList), inline=True)
     await inter.response.send_message(embed=embed)
 
 
+@bot.slash_command(name="bind_val")
+async def bind_val(
+    inter: disnake.ApplicationCommandInteraction,
+    fullname: str,
+    member: disnake.User | disnake.Member | None = None,
+) -> None:
+    await inter.response.defer()
+    if member is None:
+        member = inter.author
+    if member.id not in dc_users:
+        dc_users[member.id] = DiscordBinds(val_id="")
+    puuid = fullname2puuid(fullname)
+    dc_users[member.id].val_id = puuid
+    val_users[puuid]  # write to val_users
+    await inter.edit_original_response(f"Done!")
+
+
 if __name__ == "__main__":
-    keep_alive.keep_alive()
+    if settings.is_repl_it:
+        keep_alive.keep_alive()
     bot.run(settings.token)

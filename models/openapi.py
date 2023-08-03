@@ -811,8 +811,8 @@ class BySeason1(BaseModel):
 
 
 class Data1(BaseModel):
-    name: str | None = Field(None, examples=["Henrik3"])
-    tag: str | None = Field(None, examples=["EUW3"])
+    name: str
+    tag: str
     current_data: CurrentData | None = None
     highest_rank: HighestRank | None = None
     by_season: BySeason1 | None = None
