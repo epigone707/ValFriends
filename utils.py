@@ -2,7 +2,7 @@ from typing import Any, Iterable
 
 import disnake
 
-from models.users.discord import DiscordBinds, dc_users
+from models.users.discord import DCUser, dc_users
 from models.users.valorant import fullname2puuid, val_users
 
 

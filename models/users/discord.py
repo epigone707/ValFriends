@@ -5,8 +5,8 @@ from models.users.valorant import ValUser, val_users
 from settings import settings
 
 
-class DiscordBinds(BaseModel):
-    val_id: str
+class DCUser(BaseModel):
+    val_id: str = ""
 
     @property
     def val_user(self) -> ValUser:
@@ -15,6 +15,6 @@ class DiscordBinds(BaseModel):
 
 dc_users = CacheSqliteDict(
     filename=settings.db_filename,
-    tablename="discord_users",
+    tablename="dc_users",
     autocommit=True,
 )

@@ -3,7 +3,7 @@ from disnake.ext import commands
 
 import keep_alive
 from logger import logger
-from models.users.discord import DiscordBinds, dc_users
+from models.users.discord import DCUser, dc_users
 from models.users.valorant import ValUser, fullname2puuid, val_users
 from settings import settings
 from utils import get_rank_order
@@ -104,6 +104,7 @@ async def all_stats(inter: disnake.ApplicationCommandInteraction) -> None:
 @bot.slash_command(name="stats")
 async def stats(
     inter: disnake.ApplicationCommandInteraction,
+    member: disnake.User | disnake.Member | None = None,
 ) -> None:
     """
     Get user's stats.
@@ -113,7 +114,9 @@ async def stats(
     fullname: The fullname of the player, should be in the form: <username>#<tag>.
     """
     await inter.response.defer()
-    res: ValUser = dc_users[inter.author.id].val_user
+    if member is None:
+        member = inter.author
+    res: ValUser = dc_users[member.id].val_user
     logger.info(res)
     embed = disnake.Embed(title=f"Stats of {res.fullname}", color=disnake.Color.blue())
     embed.add_field(name="Highest rank", value=res.hrank, inline=True)
@@ -240,11 +243,11 @@ async def bind_val(
     await inter.response.defer()
     if member is None:
         member = inter.author
-    if member.id not in dc_users:
-        dc_users[member.id] = DiscordBinds(val_id="")
+    dc_user = dc_users[member.id] if member.id in dc_users else DCUser()
     puuid = fullname2puuid(fullname)
-    dc_users[member.id].val_id = puuid
-    val_users[puuid]  # write to val_users
+    dc_user.val_id = puuid
+    dc_users[member.id] = dc_user
+    _ = val_users[puuid]  # write to val_users
     await inter.edit_original_response(f"Done!")
 
 

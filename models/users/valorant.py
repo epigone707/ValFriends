@@ -100,7 +100,7 @@ def fullname2puuid(fullname: str) -> str:
 
 val_users = CacheSqliteDict(
     filename=settings.db_filename,
-    tablename="users",
+    tablename="val_users",
     autocommit=True,
     on_expire=fetch_user_stats,
     expire_time=settings.expire_time,
