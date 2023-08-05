@@ -18,12 +18,6 @@ features in progress:
 
 
 features finished:
-- update the userlist cache in some way. option1: add a timestamp for every user in the cache. option2: add an option in stats command or add a new command to update the cache
-- use slash commands to let them show when user types '/'
-- support help slash command. Need to show the info for each parameter when user clicks on it.
-- get user's recent matches stats like kda
-- autocomplete username
-- add rank icon to every rank shown in stats, all_stats and crank. There is a icon url in the return json from API, just store it in the cache!
 
 """
 
@@ -111,7 +105,7 @@ async def stats(
 
     Parameters
     ----------
-    fullname: The fullname of the player, should be in the form: <username>#<tag>.
+    member: The id of the discord user.
     """
     await inter.response.defer()
     if member is None:
@@ -240,6 +234,14 @@ async def bind_val(
     fullname: str,
     member: disnake.User | disnake.Member | None = None,
 ) -> None:
+    """
+    Bind a Valorant user to a discord user and add it to the user list.
+
+    Parameters
+    ----------
+    fullname: The valorant user fullname, should be in the form <valorant_name>#<valorant_tag>
+    member: The id of the discord user. If none, then by default bind to who execute this command.
+    """
     await inter.response.defer()
     if member is None:
         member = inter.author
