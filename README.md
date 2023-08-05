@@ -62,13 +62,13 @@ To print users in sorted order of current rank, use `/crank`.
 
 To print users in sorted order of lifetime highest rank, use `/hrank`.
 
-To print stats for all users, use `/allstats`
+To print stats for all users, use `/all_stats`
 
 Note that the profile for every user in the user list is cached in a sqlite database. When you execute `stats`, the bot actually returns the data in cache.
 
 The bot generates a timestamp for every profile. The profile will expire after some time and the bot will fetched the up-to-date data from the API.
 
-You can also force the cache to update by using `/expire` or `/allexpire`.
+You can also force the cache to update by using `/expire` or `/all_expire`.
 
 
 
