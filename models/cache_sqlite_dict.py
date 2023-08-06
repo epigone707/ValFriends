@@ -26,7 +26,7 @@ class CacheSqliteDict(SqliteDict):
 
     def __getitem__(self, key: Any) -> Any:
         if key not in self.last_fetch_time:
-            self.last_fetch_time[key] = time.time()
+            self.last_fetch_time[key] = time.time() - self.expire_time - 1
         if (
             not self.__contains__(key)
             or time.time() - self.last_fetch_time[key] > self.expire_time
