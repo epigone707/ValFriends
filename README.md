@@ -6,6 +6,7 @@ A Discord bot for game Valorant, aims for helping you play with your friends hap
 
 Just need a simple command to register your valorant account into the user list. You can easily view stats and rank info for everyone in the discord server.
 
+**Please give me a STAR if you think this is helpful**
 
 ## Installation
 
