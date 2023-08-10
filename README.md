@@ -90,7 +90,7 @@ bind_val    - Bind a Valorant user to a discord user and add it to the user list
 all_delete  - Delete all users from the user list of this server (admin only).
 hello       - Responds with 'Hello World'. Used for testing.
 ```
-You can also execute `help <command>` to view the details of the command parameters.
+You can also execute `/help <command>` to view the details of the command parameters.
 
 
 ## API reference
