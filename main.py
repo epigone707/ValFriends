@@ -1,10 +1,22 @@
+import asyncio
+from datetime import datetime
+import time
+import traceback
+from typing import List
+
 import disnake
 from disnake.ext import commands
 
 import keep_alive
 from logger import logger
 from models.users.discord import DCUser, dc_users
-from models.users.valorant import ValUser, fullname2puuid, val_users
+from models.users.valorant import (
+    ValStats,
+    ValUser,
+    fullname2puuid,
+    val_users,
+    val_user_stats,
+)
 from settings import settings
 from utils import get_rank_order
 
@@ -21,10 +33,8 @@ features finished:
 
 """
 
-intents = disnake.Intents.default()
-intents.message_content = True
-command_sync_flags = commands.CommandSyncFlags.default()
-command_sync_flags.sync_commands_debug = True
+intents = disnake.Intents.all()
+command_sync_flags = commands.CommandSyncFlags.all()
 
 bot = commands.Bot(
     command_prefix="!",
@@ -32,6 +42,9 @@ bot = commands.Bot(
     intents=intents,
     test_guilds=[settings.test_server_id],
     help_command=None,
+    activity=disnake.Activity(
+        name=f"{len(val_users)} users stats", type=disnake.ActivityType.watching
+    ),
 )
 
 
@@ -99,6 +112,7 @@ async def all_stats(inter: disnake.ApplicationCommandInteraction) -> None:
 async def stats(
     inter: disnake.ApplicationCommandInteraction,
     member: disnake.User | disnake.Member | None = None,
+    count: int = 5,
 ) -> None:
     """
     Get user's stats.
@@ -110,26 +124,36 @@ async def stats(
     await inter.response.defer()
     if member is None:
         member = inter.author
-    res: ValUser = dc_users[member.id].val_user
-    logger.info(res)
-    embed = disnake.Embed(title=f"Stats of {res.fullname}", color=disnake.Color.blue())
-    embed.add_field(name="Highest rank", value=res.hrank, inline=True)
-    embed.add_field(name="Current rank", value=res.crank, inline=True)
-    embed.add_field(name="Elo", value=res.elo, inline=True)
-    if hasattr(res, "crank_img") and res.crank_img:
-        embed.set_thumbnail(url=res.crank_img)
+    user: ValUser = dc_users[member.id].val_user
+    stats: List[ValStats] = dc_users[member.id].val_user_stats
+    logger.info(user)
+    embed = disnake.Embed(title=f"Stats of @{member} ", color=disnake.Color.blue())
+    embed.add_field(name="Highest rank", value=user.hrank, inline=True)
+    embed.add_field(name="Current rank", value=user.crank, inline=True)
+    embed.add_field(name="Elo", value=user.elo, inline=True)
+    embed.set_footer(
+        text=user.fullname,
+        icon_url=(
+            user.crank_img if hasattr(user, "crank_img") and user.crank_img else None
+        ),
+    )
 
-    if res.recent_stats:
-        recent_c_performance = ""
-        for valstats in res.recent_stats:
-            kda = f"kda:{valstats.kills}/{valstats.deaths}/{valstats.assists}"
-            recent_c_performance += (
-                f"{valstats.result} {valstats.agent} dmg:{valstats.damage} {kda}\n"
+    if stats:
+        recent_c_performance = "`❔ W-L  Agent    ADR  K/ D/ A HS d`\n"
+        for valstats in stats[: min(50, count)]:
+            kda = f"{valstats.kills: >2}/{valstats.deaths: >2}/{valstats.assists: >2}"
+            line = (
+                f"`{valstats.result}{valstats.wins: >2}-{valstats.loses: <2} "
+                + f"{valstats.agent: <8} {valstats.damage: >3} {kda: <8} "
+                + f"{min(99, valstats.headshot): >2} "
+                + f"{min(round((datetime.utcnow()-valstats.time).total_seconds() / 60 / 60 / 24), 9): >1}`\n"
             )
+            tmp = recent_c_performance + line
+            if len(tmp) > 1000:
+                break
+            recent_c_performance = tmp
         embed.add_field(
-            name="Recent Competitive Performance",
-            value=recent_c_performance,
-            inline=True,
+            name="Recent Competitive Performance", value=recent_c_performance
         )
     await inter.edit_original_response(embed=embed)
 
@@ -250,7 +274,97 @@ async def bind_val(
     dc_user.val_id = puuid
     dc_users[member.id] = dc_user
     _ = val_users[puuid]  # write to val_users
+    _ = val_user_stats[puuid]  # write to val_user_stats
     await inter.edit_original_response(f"Done!")
+    await bot.change_presence(
+        status=bot.status,
+        activity=disnake.Activity(
+            name=f"{len(val_users)} users stats", type=disnake.ActivityType.watching
+        ),
+    )
+
+
+EMOJIS = [
+    "0️⃣",
+    "1️⃣",
+    "2️⃣",
+    "3️⃣",
+    "4️⃣",
+    "5️⃣",
+    "6️⃣",
+    "7️⃣",
+    "8️⃣",
+    "9️⃣",
+    "🇦",
+    "🇧",
+]
+
+
+@bot.slash_command(name="vote")
+async def vote(
+    inter: disnake.ApplicationCommandInteraction,
+    title: str = "Vote",
+    interval_min: int = 60,
+    count: int = 12,
+) -> None:
+    count = min(count, 12)
+    await inter.response.defer()
+    embed = disnake.Embed(title=title, color=disnake.Color.blue())
+    now = int(time.time())
+    for i, reaction in enumerate(EMOJIS[:count]):
+        embed.add_field(
+            name=f"{reaction}: <t:{now + (i+1) * 60 * interval_min}:R>",
+            value=0,
+            inline=True,
+        )
+    msg = await inter.original_message()
+    await asyncio.gather(
+        inter.edit_original_response(embed=embed),
+        *[msg.add_reaction(emoji) for emoji in EMOJIS],
+    )
+
+
+async def on_reaction_change(
+    reaction: disnake.Reaction, user: disnake.User | disnake.Member
+):
+    msg = reaction.message
+    if msg.author.id != bot.user.id or user.id == bot.user.id:
+        return
+    if reaction.emoji not in EMOJIS or not msg.embeds or msg.embeds[0].title != "Vote":
+        return
+    embed = msg.embeds[0]
+    i = EMOJIS.index(reaction.emoji)
+    embed.set_field_at(i, embed.fields[i].name, reaction.count - 1)
+    await msg.edit(embed=embed)
+
+
+@bot.event
+async def on_reaction_add(
+    reaction: disnake.Reaction, user: disnake.User | disnake.Member
+):
+    await on_reaction_change(reaction, user)
+
+
+@bot.event
+async def on_reaction_remove(
+    reaction: disnake.Reaction, user: disnake.User | disnake.Member
+):
+    await on_reaction_change(reaction, user)
+
+
+@bot.event
+async def on_slash_command_error(
+    inter: disnake.ApplicationCommandInteraction, exception: commands.CommandError
+):
+    logger.error(
+        f"An exception occurred: {exception}"
+        + "\n".join(
+            traceback.format_exception(
+                type(exception), exception, exception.__traceback__
+            )
+        )
+    )
+    await inter.edit_original_response(f"{exception}! Please contact the developer!")
 
 
 if __name__ == "__main__":

@@ -1079,9 +1079,9 @@ class Character(Map1):
 
 
 class Shots(BaseModel):
-    head: float | None = None
-    body: float | None = None
-    leg: float | None = None
+    head: float
+    body: float
+    leg: float
 
 
 class Damage(BaseModel):

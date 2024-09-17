@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     test_server_id: int = 0
     is_repl_it: bool = False
     region: RegionEnum = RegionEnum.na
+    api_key: str = ""
 
 
 settings = Settings()

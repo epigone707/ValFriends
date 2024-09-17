@@ -1,7 +1,8 @@
+from typing import List
 from pydantic import BaseModel
 
 from models.cache_sqlite_dict import CacheSqliteDict
-from models.users.valorant import ValUser, val_users
+from models.users.valorant import ValStats, ValUser, val_users, val_user_stats
 from settings import settings
 
 
@@ -11,6 +12,10 @@ class DCUser(BaseModel):
     @property
     def val_user(self) -> ValUser:
         return val_users[self.val_id]
+
+    @property
+    def val_user_stats(self) -> List[ValStats]:
+        return val_user_stats[self.val_id]
 
 
 dc_users = CacheSqliteDict(
