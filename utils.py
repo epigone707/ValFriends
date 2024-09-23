@@ -1,10 +1,5 @@
 from typing import Any, Iterable
 
-import disnake
-
-from models.users.discord import DCUser, dc_users
-from models.users.valorant import fullname2puuid, val_users
-
 
 def rank2num(rankStr: str) -> int:
     ranks = [
@@ -18,7 +13,7 @@ def rank2num(rankStr: str) -> int:
         "Immortal",
         "Radiant",
     ]
-    if rankStr is None or rankStr == "Unranked":
+    if rankStr is None or rankStr in ["Unranked", "Unrated"]:
         return 0
     rank, level = rankStr.split(" ")
     return ranks.index(rank) * 10 + int(level)
