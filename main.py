@@ -5,7 +5,7 @@ import traceback
 from typing import List
 
 import disnake
-from disnake.ext import commands
+from disnake.ext import tasks, commands
 
 import keep_alive
 from logger import logger
@@ -51,6 +51,7 @@ bot = commands.Bot(
 @bot.event
 async def on_ready() -> None:
     logger.info("We have logged in as {0.user}".format(bot))
+    update.start()
 
 
 @bot.slash_command()
@@ -365,6 +366,18 @@ async def on_slash_command_error(
         )
     )
     await inter.edit_original_response(f"{exception}! Please contact the developer!")
+
+
+@tasks.loop(seconds=60.0)
+async def update() -> None:
+    """
+    Update dataset automatically in the background.
+    """
+    for key, value in val_users.items():
+        val_users.expire(key)
+        val_user_stats.expire(key)
+        logger.info(f"Stats of {value.fullname} updated at {time.time() - val_users.last_fetch_time[key]}s ago.")
+        break
 
 
 if __name__ == "__main__":
