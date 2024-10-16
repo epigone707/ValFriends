@@ -166,3 +166,5 @@ replit.nix
 
 *.sqlite
 .breakpoints
+
+debug.py
