@@ -368,7 +368,7 @@ async def on_slash_command_error(
     await inter.edit_original_response(f"{exception}! Please contact the developer!")
 
 
-@tasks.loop(seconds=60.0)
+@tasks.loop(seconds=10.0)
 async def update() -> None:
     """
     Update dataset automatically in the background.
